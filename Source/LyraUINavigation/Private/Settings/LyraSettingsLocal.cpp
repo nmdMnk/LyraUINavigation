@@ -24,6 +24,7 @@
 //#include "Development/LyraPlatformEmulationSettings.h"
 #include "Audio/LyraAudioSettings.h"
 #include "Audio/LyraAudioMixEffectsSubsystem.h"
+#include "EnhancedActionKeyMapping.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingsLocal)
 
@@ -754,7 +755,7 @@ void ULyraSettingsLocal::ClampMobileQuality()
 
 		// Choose the closest supported frame rate to the user desired setting without going over the device imposed limit
 		const TArray<int32>& PossibleRates = PlatformSettings->MobileFrameRateLimits;
-		const int32 LimitIndex = PossibleRates.FindLastByPredicate([=](const int32& TestRate) { return (TestRate <= DesiredMobileFrameRateLimit) && IsSupportedMobileFramePace(TestRate); });
+		const int32 LimitIndex = PossibleRates.FindLastByPredicate([this](const int32& TestRate) { return (TestRate <= DesiredMobileFrameRateLimit) && IsSupportedMobileFramePace(TestRate); });
 		const int32 ActualLimitFPS = PossibleRates.IsValidIndex(LimitIndex) ? PossibleRates[LimitIndex] : GetDefaultMobileFrameRate();
 
 		ClampMobileResolutionQuality(ActualLimitFPS);
@@ -1412,7 +1413,7 @@ void ULyraSettingsLocal::UpdateMobileFramePacing()
 	// Choose the closest supported frame rate to the user desired setting without going over the device imposed limit
 	const ULyraPlatformSpecificRenderingSettings* PlatformSettings = ULyraPlatformSpecificRenderingSettings::Get();
 	const TArray<int32>& PossibleRates = PlatformSettings->MobileFrameRateLimits;
-	const int32 LimitIndex = PossibleRates.FindLastByPredicate([=](const int32& TestRate) { return (TestRate <= MobileFrameRateLimit) && IsSupportedMobileFramePace(TestRate); });
+	const int32 LimitIndex = PossibleRates.FindLastByPredicate([this](const int32& TestRate) { return (TestRate <= MobileFrameRateLimit) && IsSupportedMobileFramePace(TestRate); });
 	const int32 TargetFPS = PossibleRates.IsValidIndex(LimitIndex) ? PossibleRates[LimitIndex] : GetDefaultMobileFrameRate();
 
 	UE_LOG(LogConsoleResponse, Log, TEXT("Setting frame pace to %d Hz."), TargetFPS);

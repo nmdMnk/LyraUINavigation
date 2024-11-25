@@ -5,7 +5,7 @@
 #include "Engine/Engine.h"
 #include "Framework/Application/SlateApplication.h"
 #include "GameFramework/GameUserSettings.h"
-#include "GameSettings/GameSettingFilterState.h"
+#include "GameSettingFilterState.h"
 #include "GenericPlatform/GenericApplication.h"
 #include "HAL/PlatformMisc.h"
 #include "Internationalization/Internationalization.h"

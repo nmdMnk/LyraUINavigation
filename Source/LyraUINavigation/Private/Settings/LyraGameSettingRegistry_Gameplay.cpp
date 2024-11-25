@@ -2,13 +2,13 @@
 
 #include "Settings/LyraGameSettingRegistry.h"
 
-#include "GameSettings/GameSetting.h"
-#include "GameSettings/GameSettingValueDiscreteDynamic.h"
-#include "GameSettings/GameSettingValueScalar.h"
-#include "GameSettings/GameSettingValueScalarDynamic.h"
-#include "GameSettings/GameSettingCollection.h"
-#include "GameSettings/GameSettingAction.h"
-#include "GameSettings/EditCondition/WhenPlayingAsPrimaryPlayer.h"
+#include "GameSetting.h"
+#include "GameSettingValueDiscreteDynamic.h"
+#include "GameSettingValueScalar.h"
+#include "GameSettingValueScalarDynamic.h"
+#include "GameSettingCollection.h"
+#include "GameSettingAction.h"
+#include "EditCondition/WhenPlayingAsPrimaryPlayer.h"
 #include "Settings/CustomSettings/LyraSettingValueDiscrete_Language.h"
 #include "Player/LyraLocalPlayer.h"
 

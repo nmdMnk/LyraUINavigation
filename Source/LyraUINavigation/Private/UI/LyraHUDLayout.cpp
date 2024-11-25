@@ -2,7 +2,7 @@
 
 #include "UI/LyraHUDLayout.h"
 
-#include "CommonGame/CommonUIExtensions.h"
+#include "CommonUIExtensions.h"
 #include "Delegates/Delegate.h"
 #include "Input/CommonUIInputTypes.h"
 #include "Misc/AssertionMacros.h"

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Containers/Array.h"
-#include "GameSettings/GameSettingValueDiscrete.h"
+#include "GameSettingValueDiscrete.h"
 #include "GenericPlatform/GenericWindow.h"
 #include "Internationalization/Text.h"
 #include "Math/IntPoint.h"

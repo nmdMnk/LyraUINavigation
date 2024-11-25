@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Containers/Array.h"
-#include "GameSettings/GameSettingValueDiscrete.h"
+#include "GameSettingValueDiscrete.h"
 #include "HAL/Platform.h"
 #include "Internationalization/Text.h"
 #include "UObject/UObjectGlobals.h"

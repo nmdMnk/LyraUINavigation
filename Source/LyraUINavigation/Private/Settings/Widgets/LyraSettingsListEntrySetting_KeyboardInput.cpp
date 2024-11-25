@@ -4,16 +4,16 @@
 
 #include "CommonActivatableWidget.h"
 #include "CommonButtonBase.h"
-#include "CommonGame/CommonUIExtensions.h"
+#include "CommonUIExtensions.h"
 #include "Delegates/Delegate.h"
-#include "GameSettings/GameSetting.h"
+#include "GameSetting.h"
 #include "Misc/AssertionMacros.h"
 #include "NativeGameplayTags.h"
 #include "Settings/CustomSettings/LyraSettingKeyboardInput.h"
 #include "Templates/Casts.h"
 #include "UI/Foundation/LyraButtonBase.h"
 #include "UObject/NameTypes.h"
-#include "GameSettings/Widgets/Misc/GameSettingPressAnyKey.h"
+#include "Widgets/Misc/GameSettingPressAnyKey.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingsListEntrySetting_KeyboardInput)
 

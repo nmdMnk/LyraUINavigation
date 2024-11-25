@@ -10,6 +10,7 @@
 #include "Settings/LyraSettingsLocal.h"
 #include "UObject/NameTypes.h"
 #include "UObject/UnrealNames.h"
+#include "Player/LyraLocalPlayer.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraInputComponent)
 

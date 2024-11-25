@@ -5,7 +5,7 @@
 #include "CoreTypes.h"
 #include "Engine/Engine.h"
 #include "GameFramework/GameUserSettings.h"
-#include "GameSettings/GameSettingFilterState.h"
+#include "GameSettingFilterState.h"
 #include "Internationalization/Internationalization.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Templates/Casts.h"

@@ -2,7 +2,7 @@
 
 #include "Settings/CustomSettings/LyraSettingAction_SafeZoneEditor.h"
 
-#include "GameSettings/DataSource/GameSettingDataSourceDynamic.h"
+#include "DataSource/GameSettingDataSourceDynamic.h"
 #include "HAL/Platform.h"
 #include "Internationalization/Internationalization.h"
 #include "Internationalization/Text.h"

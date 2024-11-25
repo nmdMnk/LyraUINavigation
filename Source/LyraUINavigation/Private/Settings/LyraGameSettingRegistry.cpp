@@ -3,7 +3,7 @@
 #include "Settings/LyraGameSettingRegistry.h"
 
 #include "Engine/LocalPlayer.h"
-#include "GameSettings/GameSettingCollection.h"
+#include "GameSettingCollection.h"
 #include "HAL/Platform.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Settings/LyraSettingsShared.h"

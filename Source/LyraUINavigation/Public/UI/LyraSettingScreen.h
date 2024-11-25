@@ -5,7 +5,7 @@
 #include "Engine/DataTable.h"
 #include "Input/UIActionBindingHandle.h"
 #include "UObject/UObjectGlobals.h"
-#include "GameSettings/Widgets/GameSettingScreen.h"
+#include "Widgets/GameSettingScreen.h"
 
 #include "LyraSettingScreen.generated.h"
 

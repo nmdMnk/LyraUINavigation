@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CommonGame/Messaging/CommonMessagingSubsystem.h"
+#include "Messaging/CommonMessagingSubsystem.h"
 #include "Templates/SubclassOf.h"
 #include "UObject/SoftObjectPtr.h"
 #include "UObject/UObjectGlobals.h"

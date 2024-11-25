@@ -3,7 +3,7 @@
 #pragma once
 
 #include "EnhancedActionKeyMapping.h"
-#include "GameSettings/GameSettingValue.h"
+#include "GameSettingValue.h"
 #include "HAL/Platform.h"
 #include "InputCoreTypes.h"
 #include "Internationalization/Text.h"

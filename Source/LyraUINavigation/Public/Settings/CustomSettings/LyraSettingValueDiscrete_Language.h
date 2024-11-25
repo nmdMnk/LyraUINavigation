@@ -4,7 +4,7 @@
 
 #include "Containers/Array.h"
 #include "Containers/UnrealString.h"
-#include "GameSettings/GameSettingValueDiscrete.h"
+#include "GameSettingValueDiscrete.h"
 #include "HAL/Platform.h"
 #include "UObject/UObjectGlobals.h"
 

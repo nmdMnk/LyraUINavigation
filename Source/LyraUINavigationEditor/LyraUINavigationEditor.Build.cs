@@ -18,6 +18,7 @@ public class LyraUINavigationEditor : ModuleRules
                 "CoreUObject",
                 "InputCore",
                 "Engine",
+                "CommonGame",
                 "LyraUINavigation"
             }
         );

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Containers/Ticker.h"
-#include "CommonGame/GameUIManagerSubsystem.h"
+#include "GameUIManagerSubsystem.h"
 #include "UObject/UObjectGlobals.h"
 
 #include "LyraUIManagerSubsystem.generated.h"

@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LyraUINavigation.h"
+#include "LyraUINavigationModule.h"
+
+#include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "FLyraUINavigationModule"
 
@@ -17,4 +19,4 @@ void FLyraUINavigationModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-//IMPLEMENT_MODULE(FLyraUINavigationModule, LyraUINavigation)
+IMPLEMENT_MODULE(FLyraUINavigationModule, LyraUINavigation)

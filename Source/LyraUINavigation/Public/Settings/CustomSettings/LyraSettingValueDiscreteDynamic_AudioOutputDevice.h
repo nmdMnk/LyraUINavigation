@@ -5,7 +5,7 @@
 #include "AudioMixerBlueprintLibrary.h"
 #include "Containers/Array.h"
 #include "Containers/UnrealString.h"
-#include "GameSettings/GameSettingValueDiscreteDynamic.h"
+#include "GameSettingValueDiscreteDynamic.h"
 #include "HAL/Platform.h"
 #include "UObject/UObjectGlobals.h"
 

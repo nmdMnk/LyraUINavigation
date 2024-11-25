@@ -2,7 +2,7 @@
 
 #include "UI/Subsystem/LyraUIManagerSubsystem.h"
 
-#include "CommonGame/CommonLocalPlayer.h"
+#include "CommonLocalPlayer.h"
 #include "Components/SlateWrapperTypes.h"
 #include "Containers/Array.h"
 #include "Delegates/Delegate.h"
@@ -10,8 +10,8 @@
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/HUD.h"
 #include "GameFramework/PlayerController.h"
-#include "CommonGame/GameUIPolicy.h"
-#include "CommonGame/PrimaryGameLayout.h"
+#include "GameUIPolicy.h"
+#include "PrimaryGameLayout.h"
 #include "Templates/Casts.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraUIManagerSubsystem)

@@ -7,13 +7,7 @@ public class LyraUINavigation : ModuleRules
 	public LyraUINavigation(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
-		//PublicIncludePaths.AddRange(
-		//	new string[] {
-		//		"LyraUINavigation"
-		//	}
-		//	);
-		
+			
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core",
@@ -39,7 +33,10 @@ public class LyraUINavigation : ModuleRules
             "DeveloperSettings",
             "CommonInput",
             "AudioMixer",
-            "AudioModulation"
+            "AudioModulation",
+            "GameSettings",
+            "CommonGame",
+            "CommonUser"
         });
 	}
 }

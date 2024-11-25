@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "GameSettings/DataSource/GameSettingDataSourceDynamic.h" // IWYU pragma: keep
-#include "GameSettings/GameSettingRegistry.h"
+#include "DataSource/GameSettingDataSourceDynamic.h" // IWYU pragma: keep
+#include "GameSettingRegistry.h"
 #include "Logging/LogMacros.h"
 #include "Misc/AssertionMacros.h"
 #include "Settings/LyraSettingsLocal.h" // IWYU pragma: keep

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "AudioMixerBlueprintLibrary.h"
-#include "CommonGame/CommonLocalPlayer.h"
+#include "CommonLocalPlayer.h"
 #include "Containers/UnrealString.h"
 #include "HAL/Platform.h"
 #include "UObject/UObjectGlobals.h"

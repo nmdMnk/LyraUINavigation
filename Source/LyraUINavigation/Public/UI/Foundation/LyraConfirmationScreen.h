@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CommonActivatableWidget.h"
-#include "CommonGame/Messaging/CommonGameDialog.h"
+#include "Messaging/CommonGameDialog.h"
 
 #include "LyraConfirmationScreen.generated.h"
 

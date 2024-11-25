@@ -8,7 +8,7 @@
 #include "Input/Reply.h"
 #include "UObject/UObjectGlobals.h"
 #include "UObject/WeakObjectPtrTemplates.h"
-#include "GameSettings/Widgets/IGameSettingActionInterface.h"
+#include "Widgets/IGameSettingActionInterface.h"
 
 #include "LyraBrightnessEditor.generated.h"
 

@@ -1,12 +1,16 @@
 # LyraUINavigation
 Lyra's UI Navigation logic extracted into its own plugin
 
-In order to add Lyra UI Navigation into a Blueprint-only project, you'll have to download the binaries from this repository and extract them into [Engine Installation Folder]/Engine/Plugins/Marketplace. After doing this and opening your project, you should be able to enable the plugin by going to Plugins -> User Interface.
+Copy the following plugins from the Lyra Starter Game project. There is no need to enable them manually, as they will be automatically enabled as dependencies of the LyraUINavigation plugin:
+- CommonGame
+- CommonUser
+- GameSettings
+- ModularGameplayActors
 
 After adding this plugin to your project and enabling it, be sure to:
 - Go to Project Settings and update the following properties:
-  - [Game / Common Input Settings] -> Game Instance Class = CommonGameInstance
-  - [Project / Maps & Modes] -> Input Data = B_CommonInputData
+  - [Project / Maps & Modes] -> Game Instance Class = LyraUINavGameInstance
+  - [Game / Common Input Settings]-> Input Data = B_CommonInputData
   - [Engine / General Settings] -> Game Viewport Client Class = LyraGameViewportClient
   - [Engine / General Settings] -> Local Player Class = LyraLocalPlayer
   - [Engine / General Settings] -> Game User Settings Class = LyraSettingsLocal

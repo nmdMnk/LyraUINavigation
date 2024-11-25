@@ -2,10 +2,10 @@
 
 #include "UI/Subsystem/LyraUIMessaging.h"
 
-#include "CommonGame/Messaging/CommonGameDialog.h"
+#include "Messaging/CommonGameDialog.h"
 #include "NativeGameplayTags.h"
 #include "Player/LyraLocalPlayer.h"
-#include "CommonGame/PrimaryGameLayout.h"
+#include "PrimaryGameLayout.h"
 #include "Templates/Casts.h"
 #include "UObject/NameTypes.h"
 

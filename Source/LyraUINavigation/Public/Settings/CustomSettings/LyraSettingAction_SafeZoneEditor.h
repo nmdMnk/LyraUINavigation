@@ -3,8 +3,8 @@
 #pragma once
 
 #include "Containers/Array.h"
-#include "GameSettings/GameSettingAction.h"
-#include "GameSettings/GameSettingValueScalarDynamic.h"
+#include "GameSettingAction.h"
+#include "GameSettingValueScalarDynamic.h"
 #include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingAction_SafeZoneEditor.generated.h"

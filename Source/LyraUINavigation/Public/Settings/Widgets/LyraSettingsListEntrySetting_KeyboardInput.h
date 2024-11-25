@@ -6,8 +6,8 @@
 #include "InputCoreTypes.h"
 #include "Templates/SubclassOf.h"
 #include "UObject/UObjectGlobals.h"
-#include "GameSettings/Widgets/GameSettingListEntry.h"
-#include "GameSettings/Widgets/Misc/KeyAlreadyBoundWarning.h"
+#include "Widgets/GameSettingListEntry.h"
+#include "Widgets/Misc/KeyAlreadyBoundWarning.h"
 
 #include "LyraSettingsListEntrySetting_KeyboardInput.generated.h"
 
