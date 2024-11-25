@@ -3,16 +3,6 @@
 #pragma once
 
 #include "CommonTabListWidgetBase.h"
-#include "Containers/Array.h"
-#include "Containers/Map.h"
-#include "Delegates/Delegate.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Text.h"
-#include "Styling/SlateBrush.h"
-#include "Templates/SubclassOf.h"
-#include "UObject/Interface.h"
-#include "UObject/NameTypes.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraTabListWidgetBase.generated.h"
 
@@ -23,7 +13,7 @@ class UWidget;
 struct FFrame;
 
 USTRUCT(BlueprintType)
-struct LYRAUINAVIGATION_API FLyraTabDescriptor
+struct FLyraTabDescriptor
 {
 	GENERATED_BODY()
 
@@ -33,23 +23,23 @@ public:
 	, CreatedTabContentWidget(nullptr)
 	{ }
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName TabId;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText TabText;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FSlateBrush IconBrush;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bHidden;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<UCommonButtonBase> TabButtonType;
 
 	//TODO NDarnell - This should become a TSoftClassPtr<>, the underlying common tab list needs to be able to handle lazy tab content construction.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lyra Tab")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<UCommonUserWidget> TabContentType;
 
 	UPROPERTY(Transient)
@@ -57,7 +47,7 @@ public:
 };
 
 UINTERFACE(BlueprintType)
-class LYRAUINAVIGATION_API ULyraTabButtonInterface : public UInterface
+class ULyraTabButtonInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -126,7 +116,7 @@ protected:
 private:
 	void SetupTabs();
 
-	UPROPERTY(EditAnywhere, Category = "Lyra Tab List Widget", meta=(TitleProperty="TabId"))
+	UPROPERTY(EditAnywhere, meta=(TitleProperty="TabId"))
 	TArray<FLyraTabDescriptor> PreregisteredTabInfoArray;
 	
 	/**

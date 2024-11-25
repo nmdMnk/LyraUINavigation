@@ -4,10 +4,9 @@
 
 #include "Messaging/CommonGameDialog.h"
 #include "NativeGameplayTags.h"
-#include "Player/LyraLocalPlayer.h"
+#include "CommonLocalPlayer.h"
 #include "PrimaryGameLayout.h"
-#include "Templates/Casts.h"
-#include "UObject/NameTypes.h"
+#include "Widgets/CommonActivatableWidgetContainer.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraUIMessaging)
 
@@ -25,26 +24,26 @@ void ULyraUIMessaging::Initialize(FSubsystemCollectionBase& Collection)
 
 void ULyraUIMessaging::ShowConfirmation(UCommonGameDialogDescriptor* DialogDescriptor, FCommonMessagingResultDelegate ResultCallback)
 {
-	if (ULyraLocalPlayer* LocalPlayer = GetLocalPlayer<ULyraLocalPlayer>())
+	if (UCommonLocalPlayer* LocalPlayer = GetLocalPlayer<UCommonLocalPlayer>())
 	{
 		if (UPrimaryGameLayout* RootLayout = LocalPlayer->GetRootUILayout())
 		{
 			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(TAG_UI_LAYER_MODAL, ConfirmationDialogClassPtr, [DialogDescriptor, ResultCallback](UCommonGameDialog& Dialog) {
 				Dialog.SetupDialog(DialogDescriptor, ResultCallback);
-			});
+				});
 		}
 	}
 }
 
 void ULyraUIMessaging::ShowError(UCommonGameDialogDescriptor* DialogDescriptor, FCommonMessagingResultDelegate ResultCallback)
 {
-	if (ULyraLocalPlayer* LocalPlayer = GetLocalPlayer<ULyraLocalPlayer>())
+	if (UCommonLocalPlayer* LocalPlayer = GetLocalPlayer<UCommonLocalPlayer>())
 	{
 		if (UPrimaryGameLayout* RootLayout = LocalPlayer->GetRootUILayout())
 		{
 			RootLayout->PushWidgetToLayerStack<UCommonGameDialog>(TAG_UI_LAYER_MODAL, ErrorDialogClassPtr, [DialogDescriptor, ResultCallback](UCommonGameDialog& Dialog) {
 				Dialog.SetupDialog(DialogDescriptor, ResultCallback);
-			});
+				});
 		}
 	}
 }

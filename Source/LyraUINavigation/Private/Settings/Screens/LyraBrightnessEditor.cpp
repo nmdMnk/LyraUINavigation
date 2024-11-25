@@ -4,21 +4,9 @@
 
 #include "CommonButtonBase.h"
 #include "CommonRichTextBlock.h"
-#include "Components/SlateWrapperTypes.h"
 #include "Components/WidgetSwitcher.h"
-#include "Containers/Array.h"
-#include "GameSetting.h"
 #include "GameSettingValueScalar.h"
-#include "GameplayTagContainer.h"
-#include "Input/Events.h"
-#include "InputCoreTypes.h"
-#include "Internationalization/Internationalization.h"
-#include "Internationalization/Text.h"
-#include "Math/UnrealMathUtility.h"
-#include "Misc/Optional.h"
 #include "Settings/LyraSettingsLocal.h"
-#include "Templates/Casts.h"
-#include "UObject/WeakObjectPtr.h"
 #include "Widgets/Layout/SSafeZone.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraBrightnessEditor)
@@ -37,7 +25,7 @@ ULyraBrightnessEditor::ULyraBrightnessEditor(const FObjectInitializer& Initializ
 	: Super(Initializer)
 {
 	SetVisibility(ESlateVisibility::Visible);
-	bIsFocusable = true;
+	SetIsFocusable(true);
 }
 
 void ULyraBrightnessEditor::NativeOnInitialized()
@@ -51,10 +39,10 @@ void ULyraBrightnessEditor::NativeOnActivated()
 	Super::NativeOnActivated();
 
 	SSafeZone::SetGlobalSafeZoneScale(ULyraSettingsLocal::Get()->GetSafeZone());
-	
+
 	Button_Done->OnClicked().AddUObject(this, &ThisClass::HandleDoneClicked);
 
-	Button_Back->SetVisibility((bCanCancel)? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	Button_Back->SetVisibility((bCanCancel) ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 	if (bCanCancel)
 	{
 		Button_Back->OnClicked().AddUObject(this, &ThisClass::HandleBackClicked);
@@ -78,7 +66,7 @@ FReply ULyraBrightnessEditor::NativeOnAnalogValueChanged(const FGeometry& InGeom
 	{
 		const float SafeZoneMultiplier = FMath::Clamp(SSafeZone::GetGlobalSafeZoneScale().Get(1.0f) + InAnalogEvent.GetAnalogValue() * BrightnessEditor::SafeZoneChangeSpeed, 0.0f, 1.0f);
 		SSafeZone::SetGlobalSafeZoneScale(SafeZoneMultiplier >= 0 ? SafeZoneMultiplier : 0);
-		
+
 		return FReply::Handled();
 	}
 	return Super::NativeOnAnalogValueChanged(InGeometry, InAnalogEvent);

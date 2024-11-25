@@ -33,7 +33,7 @@ void ULyraListView::ValidateCompiledDefaults(IWidgetCompilerLog& InCompileLog) c
 UUserWidget& ULyraListView::OnGenerateEntryWidgetInternal(UObject* Item, TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	TSubclassOf<UUserWidget> WidgetClass = DesiredEntryClass;
-	
+
 	for (const ULyraWidgetFactory* Rule : FactoryRules)
 	{
 		if (Rule)
@@ -45,7 +45,7 @@ UUserWidget& ULyraListView::OnGenerateEntryWidgetInternal(UObject* Item, TSubcla
 			}
 		}
 	}
-	
+
 	UUserWidget& EntryWidget = GenerateTypedEntry<UUserWidget>(WidgetClass, OwnerTable);
 
 	return EntryWidget;

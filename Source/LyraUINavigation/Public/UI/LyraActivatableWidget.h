@@ -2,12 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "CommonUserWidget.h"
-#include "GameplayTagContainer.h"
 #include "CommonActivatableWidget.h"
 
 #include "LyraActivatableWidget.generated.h"
+
+struct FUIInputConfig;
 
 UENUM(BlueprintType)
 enum class ELyraWidgetInputMode : uint8
@@ -20,7 +19,7 @@ enum class ELyraWidgetInputMode : uint8
 
 // An activatable widget that automatically drives the desired input config when activated
 UCLASS(Abstract, Blueprintable)
-class LYRAUINAVIGATION_API ULyraActivatableWidget : public UCommonActivatableWidget
+class ULyraActivatableWidget : public UCommonActivatableWidget
 {
 	GENERATED_BODY()
 

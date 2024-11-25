@@ -2,10 +2,13 @@
 
 #pragma once
 
-#include "CommonActivatableWidget.h"
+#include "Engine/DataTable.h"
 #include "Messaging/CommonGameDialog.h"
 
+#include "Messaging/CommonMessagingSubsystem.h"
 #include "LyraConfirmationScreen.generated.h"
+
+class IWidgetCompilerLog;
 
 class UCommonTextBlock;
 class UCommonRichTextBlock;
@@ -16,7 +19,7 @@ class UCommonBorder;
  *	
  */
 UCLASS(Abstract, BlueprintType, Blueprintable)
-class LYRAUINAVIGATION_API ULyraConfirmationScreen : public UCommonGameDialog
+class ULyraConfirmationScreen : public UCommonGameDialog
 {
 	GENERATED_BODY()
 public:
@@ -51,6 +54,6 @@ private:
 	UPROPERTY(Meta = (BindWidget))
 	TObjectPtr<UCommonBorder> Border_TapToCloseZone;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Confirmation Screen", meta = (RowType = "/Script/CommonUI.CommonInputActionDataBase"))
+	UPROPERTY(EditDefaultsOnly, meta = (RowType = "/Script/CommonUI.CommonInputActionDataBase"))
 	FDataTableRowHandle CancelAction;
 };

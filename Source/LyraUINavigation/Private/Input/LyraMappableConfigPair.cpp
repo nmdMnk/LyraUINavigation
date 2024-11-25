@@ -6,9 +6,10 @@
 #include "ICommonUIModule.h"
 #include "PlayerMappableInputConfig.h"
 #include "Settings/LyraSettingsLocal.h"
-#include "Templates/Casts.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraMappableConfigPair)
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 bool FMappableConfigPair::CanBeActivated() const
 {
@@ -38,9 +39,9 @@ bool FMappableConfigPair::RegisterPair(const FMappableConfigPair& Pair)
 		{
 			Settings->RegisterInputConfig(Pair.Type, LoadedConfig, false);
 			return true;
-		}	
+		}
 	}
-	
+
 	return false;
 }
 
@@ -55,3 +56,4 @@ void FMappableConfigPair::UnregisterPair(const FMappableConfigPair& Pair)
 	}
 }
 
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

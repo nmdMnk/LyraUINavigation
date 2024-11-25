@@ -2,11 +2,8 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 #include "Engine/DeveloperSettings.h"
-#include "UObject/SoftObjectPath.h"
 #include "UObject/SoftObjectPtr.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraAudioSettings.generated.h"
 
@@ -15,14 +12,14 @@ class USoundEffectSubmixPreset;
 class USoundSubmix;
 
 USTRUCT()
-struct FLyraSubmixEffectChainMap
+struct LYRAUINAVIGATION_API FLyraSubmixEffectChainMap
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "SubmixEffectChain", meta = (AllowedClasses = "/Script/Engine.SoundSubmix"))
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "/Script/Engine.SoundSubmix"))
 	TSoftObjectPtr<USoundSubmix> Submix = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = "SubmixEffectChain", meta = (AllowedClasses = "/Script/Engine.SoundEffectSubmixPreset"))
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "/Script/Engine.SoundEffectSubmixPreset"))
 	TArray<TSoftObjectPtr<USoundEffectSubmixPreset>> SubmixEffectChain;
 
 };
@@ -40,10 +37,6 @@ public:
 	/** The Default Base Control Bus Mix */
 	UPROPERTY(config, EditAnywhere, Category = MixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))
 	FSoftObjectPath DefaultControlBusMix;
-
-	/** The Loading Screen Control Bus Mix - Called during loading screens to cover background audio events */
-	UPROPERTY(config, EditAnywhere, Category = MixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))
-	FSoftObjectPath LoadingScreenControlBusMix;
 
 	/** The Default Base Control Bus Mix */
 	UPROPERTY(config, EditAnywhere, Category = UserMixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))

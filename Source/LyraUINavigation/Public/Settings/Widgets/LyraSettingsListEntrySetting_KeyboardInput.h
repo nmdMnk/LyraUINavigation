@@ -2,14 +2,11 @@
 
 #pragma once
 
-#include "HAL/Platform.h"
-#include "InputCoreTypes.h"
-#include "Templates/SubclassOf.h"
-#include "UObject/UObjectGlobals.h"
 #include "Widgets/GameSettingListEntry.h"
-#include "Widgets/Misc/KeyAlreadyBoundWarning.h"
 
 #include "LyraSettingsListEntrySetting_KeyboardInput.generated.h"
+
+class UKeyAlreadyBoundWarning;
 
 class UGameSetting;
 class UGameSettingPressAnyKey;
@@ -22,7 +19,7 @@ class UObject;
 //////////////////////////////////////////////////////////////////////////
 
 UCLASS(Abstract, Blueprintable, meta = (Category = "Settings", DisableNativeTick))
-class LYRAUINAVIGATION_API ULyraSettingsListEntrySetting_KeyboardInput : public UGameSettingListEntry_Setting
+class ULyraSettingsListEntrySetting_KeyboardInput : public UGameSettingListEntry_Setting
 {
 	GENERATED_BODY()
 
@@ -37,6 +34,7 @@ protected:
 	void HandlePrimaryKeyClicked();
 	void HandleSecondaryKeyClicked();
 	void HandleClearClicked();
+	void HandleResetToDefaultClicked();
 
 	void HandlePrimaryKeySelected(FKey InKey, UGameSettingPressAnyKey* PressAnyKeyPanel);
 	void HandleSecondaryKeySelected(FKey InKey, UGameSettingPressAnyKey* PressAnyKeyPanel);
@@ -56,19 +54,22 @@ protected:
 	UPROPERTY()
 	TObjectPtr<ULyraSettingKeyboardInput> KeyboardInputSetting;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Settings Keyboard Input")
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameSettingPressAnyKey> PressAnyKeyPanelClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Settings Keyboard Input")
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UKeyAlreadyBoundWarning> KeyAlreadyBoundWarningPanelClass;
 
 private:	// Bound Widgets
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Settings Keyboard Input", meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
 	TObjectPtr<ULyraButtonBase> Button_PrimaryKey;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Settings Keyboard Input", meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
 	TObjectPtr<ULyraButtonBase> Button_SecondaryKey;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Settings Keyboard Input", meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
 	TObjectPtr<ULyraButtonBase> Button_Clear;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, BlueprintProtected = true, AllowPrivateAccess = true))
+	TObjectPtr<ULyraButtonBase> Button_ResetToDefault;
 };

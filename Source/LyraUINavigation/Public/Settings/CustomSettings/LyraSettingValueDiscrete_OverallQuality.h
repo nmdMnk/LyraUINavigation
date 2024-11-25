@@ -2,18 +2,14 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 #include "GameSettingValueDiscrete.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Text.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingValueDiscrete_OverallQuality.generated.h"
 
 class UObject;
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingValueDiscrete_OverallQuality : public UGameSettingValueDiscrete
+class ULyraSettingValueDiscrete_OverallQuality : public UGameSettingValueDiscrete
 {
 	GENERATED_BODY()
 	

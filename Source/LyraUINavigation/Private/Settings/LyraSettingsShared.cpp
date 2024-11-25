@@ -2,21 +2,15 @@
 
 #include "Settings/LyraSettingsShared.h"
 
-#include "CoreGlobals.h"
 #include "Framework/Application/SlateApplication.h"
-#include "HAL/IConsoleManager.h"
 #include "Internationalization/Culture.h"
-#include "Internationalization/CulturePointer.h"
-#include "Internationalization/Internationalization.h"
 #include "Kismet/GameplayStatics.h"
-#include "Math/UnrealMathSSE.h"
 #include "Misc/App.h"
-#include "Misc/AssertionMacros.h"
 #include "Misc/ConfigCacheIni.h"
-#include "Engine/LocalPlayer.h"
-#include "Rendering/RenderingCommon.h"
+#include "Player/LyraLocalPlayer.h"
 #include "Rendering/SlateRenderer.h"
-#include "Templates/Casts.h"
+#include "EnhancedInputSubsystems.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingsShared)
 
@@ -36,7 +30,7 @@ namespace LyraSettingsSharedCVars
 		TEXT("gpad.DefaultRightStickInnerDeadZone"),
 		DefaultGamepadRightStickInnerDeadZone,
 		TEXT("Gamepad right stick inner deadzone")
-	);	
+	);
 }
 
 ULyraSettingsShared::ULyraSettingsShared()
@@ -47,45 +41,75 @@ ULyraSettingsShared::ULyraSettingsShared()
 	GamepadLookStickDeadZone = LyraSettingsSharedCVars::DefaultGamepadRightStickInnerDeadZone;
 }
 
-void ULyraSettingsShared::Initialize(ULocalPlayer* LocalPlayer)
+int32 ULyraSettingsShared::GetLatestDataVersion() const
 {
-	check(LocalPlayer);
-	
-	OwningPlayer = LocalPlayer;
+	// 0 = before subclassing ULocalPlayerSaveGame
+	// 1 = first proper version
+	return 1;
+}
+
+ULyraSettingsShared* ULyraSettingsShared::CreateTemporarySettings(const ULyraLocalPlayer* LocalPlayer)
+{
+	// This is not loaded from disk but should be set up to save
+	ULyraSettingsShared* SharedSettings = Cast<ULyraSettingsShared>(CreateNewSaveGameForLocalPlayer(ULyraSettingsShared::StaticClass(), LocalPlayer, SHARED_SETTINGS_SLOT_NAME));
+
+	SharedSettings->ApplySettings();
+
+	return SharedSettings;
+}
+
+ULyraSettingsShared* ULyraSettingsShared::LoadOrCreateSettings(const ULyraLocalPlayer* LocalPlayer)
+{
+	// This will stall the main thread while it loads
+	ULyraSettingsShared* SharedSettings = Cast<ULyraSettingsShared>(LoadOrCreateSaveGameForLocalPlayer(ULyraSettingsShared::StaticClass(), LocalPlayer, SHARED_SETTINGS_SLOT_NAME));
+
+	SharedSettings->ApplySettings();
+
+	return SharedSettings;
+}
+
+bool ULyraSettingsShared::AsyncLoadOrCreateSettings(const ULyraLocalPlayer* LocalPlayer, FOnSettingsLoadedEvent Delegate)
+{
+	FOnLocalPlayerSaveGameLoadedNative Lambda = FOnLocalPlayerSaveGameLoadedNative::CreateLambda([Delegate]
+	(ULocalPlayerSaveGame* LoadedSave)
+		{
+			ULyraSettingsShared* LoadedSettings = CastChecked<ULyraSettingsShared>(LoadedSave);
+
+			LoadedSettings->ApplySettings();
+
+			Delegate.ExecuteIfBound(LoadedSettings);
+		});
+
+	return ULocalPlayerSaveGame::AsyncLoadOrCreateSaveGameForLocalPlayer(ULyraSettingsShared::StaticClass(), LocalPlayer, SHARED_SETTINGS_SLOT_NAME, Lambda);
 }
 
 void ULyraSettingsShared::SaveSettings()
 {
-	check(OwningPlayer);
-	UGameplayStatics::SaveGameToSlot(this, SHARED_SETTINGS_SLOT_NAME, OwningPlayer->GetLocalPlayerIndex());
-}
+	// Schedule an async save because it's okay if it fails
+	AsyncSaveGameToSlotForLocalPlayer();
 
-/*static*/ ULyraSettingsShared* ULyraSettingsShared::LoadOrCreateSettings(const ULocalPlayer* LocalPlayer)
-{
-	ULyraSettingsShared* SharedSettings = nullptr;
-
-	// If the save game exists, load it.
-	if (UGameplayStatics::DoesSaveGameExist(SHARED_SETTINGS_SLOT_NAME, LocalPlayer->GetLocalPlayerIndex()))
+	// TODO_BH: Move this to the serialize function instead with a bumped version number
+	if (UEnhancedInputLocalPlayerSubsystem* System = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwningPlayer))
 	{
-		USaveGame* Slot = UGameplayStatics::LoadGameFromSlot(SHARED_SETTINGS_SLOT_NAME, LocalPlayer->GetLocalPlayerIndex());
-		SharedSettings = Cast<ULyraSettingsShared>(Slot);
+		if (UEnhancedInputUserSettings* InputSettings = System->GetUserSettings())
+		{
+			InputSettings->AsyncSaveSettings();
+		}
 	}
-	
-	if (SharedSettings == nullptr)
-	{
-		SharedSettings = Cast<ULyraSettingsShared>(UGameplayStatics::CreateSaveGameObject(ULyraSettingsShared::StaticClass()));
-	}
-
-	SharedSettings->Initialize(const_cast<ULocalPlayer*>(LocalPlayer));
-	SharedSettings->ApplySettings();
-
-	return SharedSettings;
 }
 
 void ULyraSettingsShared::ApplySettings()
 {
 	ApplyBackgroundAudioSettings();
 	ApplyCultureSettings();
+
+	if (UEnhancedInputLocalPlayerSubsystem* System = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwningPlayer))
+	{
+		if (UEnhancedInputUserSettings* InputSettings = System->GetUserSettings())
+		{
+			InputSettings->ApplySettings();
+		}
+	}
 }
 
 void ULyraSettingsShared::SetColorBlindStrength(int32 InColorBlindStrength)
@@ -218,6 +242,6 @@ void ULyraSettingsShared::ResetToDefaultCulture()
 
 void ULyraSettingsShared::ApplyInputSensitivity()
 {
-	
+
 }
 

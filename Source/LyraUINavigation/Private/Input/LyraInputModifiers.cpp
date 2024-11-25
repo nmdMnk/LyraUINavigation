@@ -5,14 +5,8 @@
 #include "EnhancedPlayerInput.h"
 #include "GameFramework/PlayerController.h"
 #include "Input/LyraAimSensitivityData.h"
-#include "Logging/LogMacros.h"
-#include "Math/Vector2D.h"
-#include "Misc/AssertionMacros.h"
 #include "Player/LyraLocalPlayer.h"
 #include "Settings/LyraSettingsShared.h"
-#include "Templates/Casts.h"
-#include "UObject/Class.h"
-#include "UObject/UnrealType.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraInputModifiers)
 
@@ -35,7 +29,7 @@ namespace LyraInputModifiersHelpers
 		}
 		return nullptr;
 	}
-	
+
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -49,9 +43,9 @@ FInputActionValue ULyraSettingBasedScalar::ModifyRaw_Implementation(const UEnhan
 		{
 			const UClass* SettingsClass = ULyraSettingsShared::StaticClass();
 			ULyraSettingsShared* SharedSettings = LocalPlayer->GetSharedSettings();
-			
+
 			const bool bHasCachedProperty = PropertyCache.Num() == 3;
-			
+
 			const FProperty* XAxisValue = bHasCachedProperty ? PropertyCache[0] : SettingsClass->FindPropertyByName(XAxisScalarSettingName);
 			const FProperty* YAxisValue = bHasCachedProperty ? PropertyCache[1] : SettingsClass->FindPropertyByName(YAxisScalarSettingName);
 			const FProperty* ZAxisValue = bHasCachedProperty ? PropertyCache[2] : SettingsClass->FindPropertyByName(ZAxisScalarSettingName);
@@ -81,12 +75,12 @@ FInputActionValue ULyraSettingBasedScalar::ModifyRaw_Implementation(const UEnhan
 			ScalarToUse.X = FMath::Clamp(ScalarToUse.X, MinValueClamp.X, MaxValueClamp.X);
 			ScalarToUse.Y = FMath::Clamp(ScalarToUse.Y, MinValueClamp.Y, MaxValueClamp.Y);
 			ScalarToUse.Z = FMath::Clamp(ScalarToUse.Z, MinValueClamp.Z, MaxValueClamp.Z);
-			
+
 			return CurrentValue.Get<FVector>() * ScalarToUse;
 		}
 	}
-	
-	return CurrentValue;	
+
+	return CurrentValue;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -100,22 +94,22 @@ FInputActionValue ULyraInputModifierDeadZone::ModifyRaw_Implementation(const UEn
 	{
 		return CurrentValue;
 	}
-	
+
 	ULyraSettingsShared* Settings = LocalPlayer->GetSharedSettings();
 	ensure(Settings);
 
 	float LowerThreshold =
-		(DeadzoneStick == EDeadzoneStick::MoveStick) ? 
+		(DeadzoneStick == EDeadzoneStick::MoveStick) ?
 		Settings->GetGamepadMoveStickDeadZone() :
 		Settings->GetGamepadLookStickDeadZone();
-	
+
 	LowerThreshold = FMath::Clamp(LowerThreshold, 0.0f, 1.0f);
-	
+
 	auto DeadZoneLambda = [LowerThreshold, this](const float AxisVal)
-	{
-		// We need to translate and scale the input to the +/- 1 range after removing the dead zone.
-		return FMath::Min(1.f, (FMath::Max(0.f, FMath::Abs(AxisVal) - LowerThreshold) / (UpperThreshold - LowerThreshold))) * FMath::Sign(AxisVal);
-	};
+		{
+			// We need to translate and scale the input to the +/- 1 range after removing the dead zone.
+			return FMath::Min(1.f, (FMath::Max(0.f, FMath::Abs(AxisVal) - LowerThreshold) / (UpperThreshold - LowerThreshold))) * FMath::Sign(AxisVal);
+		};
 
 	FVector NewValue = CurrentValue.Get<FVector>();
 	switch (Type)
@@ -165,7 +159,7 @@ FInputActionValue ULyraInputModifierGamepadSensitivity::ModifyRaw_Implementation
 	{
 		return CurrentValue;
 	}
-	
+
 	ULyraSettingsShared* Settings = LocalPlayer->GetSharedSettings();
 	ensure(Settings);
 
@@ -186,21 +180,21 @@ FInputActionValue ULyraInputModifierAimInversion::ModifyRaw_Implementation(const
 	{
 		return CurrentValue;
 	}
-	
+
 	ULyraSettingsShared* Settings = LocalPlayer->GetSharedSettings();
 	ensure(Settings);
 
 	FVector NewValue = CurrentValue.Get<FVector>();
-	
+
 	if (Settings->GetInvertVerticalAxis())
 	{
 		NewValue.Y *= -1.0f;
 	}
-	
+
 	if (Settings->GetInvertHorizontalAxis())
 	{
 		NewValue.X *= -1.0f;
 	}
-	
+
 	return NewValue;
 }

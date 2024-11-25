@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CommonGameViewportClient.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraGameViewportClient.generated.h"
 
@@ -11,7 +10,7 @@ class UGameInstance;
 class UObject;
 
 UCLASS(BlueprintType)
-class LYRAUINAVIGATION_API ULyraGameViewportClient : public UCommonGameViewportClient
+class ULyraGameViewportClient : public UCommonGameViewportClient
 {
 	GENERATED_BODY()
 

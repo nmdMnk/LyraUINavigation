@@ -2,18 +2,12 @@
 
 #include "Settings/Widgets/LyraSettingsListEntrySetting_KeyboardInput.h"
 
-#include "CommonActivatableWidget.h"
-#include "CommonButtonBase.h"
 #include "CommonUIExtensions.h"
-#include "Delegates/Delegate.h"
-#include "GameSetting.h"
-#include "Misc/AssertionMacros.h"
 #include "NativeGameplayTags.h"
 #include "Settings/CustomSettings/LyraSettingKeyboardInput.h"
-#include "Templates/Casts.h"
 #include "UI/Foundation/LyraButtonBase.h"
-#include "UObject/NameTypes.h"
 #include "Widgets/Misc/GameSettingPressAnyKey.h"
+#include "Widgets/Misc/KeyAlreadyBoundWarning.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingsListEntrySetting_KeyboardInput)
 
@@ -33,10 +27,11 @@ void ULyraSettingsListEntrySetting_KeyboardInput::SetSetting(UGameSetting* InSet
 void ULyraSettingsListEntrySetting_KeyboardInput::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
-	
+
 	Button_PrimaryKey->OnClicked().AddUObject(this, &ThisClass::HandlePrimaryKeyClicked);
 	Button_SecondaryKey->OnClicked().AddUObject(this, &ThisClass::HandleSecondaryKeyClicked);
 	Button_Clear->OnClicked().AddUObject(this, &ThisClass::HandleClearClicked);
+	Button_ResetToDefault->OnClicked().AddUObject(this, &ThisClass::HandleResetToDefaultClicked);
 }
 
 void ULyraSettingsListEntrySetting_KeyboardInput::HandlePrimaryKeyClicked()
@@ -87,7 +82,7 @@ void ULyraSettingsListEntrySetting_KeyboardInput::ChangeBinding(int32 InKeyBindS
 	if (!ActionsForKey.IsEmpty())
 	{
 		UKeyAlreadyBoundWarning* KeyAlreadyBoundWarning = CastChecked<UKeyAlreadyBoundWarning>(
-		UCommonUIExtensions::PushContentToLayer_ForPlayer(GetOwningLocalPlayer(), PressAnyKeyLayer, KeyAlreadyBoundWarningPanelClass));
+			UCommonUIExtensions::PushContentToLayer_ForPlayer(GetOwningLocalPlayer(), PressAnyKeyLayer, KeyAlreadyBoundWarningPanelClass));
 
 		FString ActionNames;
 		for (FName ActionName : ActionsForKey)
@@ -134,6 +129,11 @@ void ULyraSettingsListEntrySetting_KeyboardInput::HandleClearClicked()
 	KeyboardInputSetting->ChangeBinding(1, EKeys::Invalid);
 }
 
+void ULyraSettingsListEntrySetting_KeyboardInput::HandleResetToDefaultClicked()
+{
+	KeyboardInputSetting->ResetToDefault();
+}
+
 void ULyraSettingsListEntrySetting_KeyboardInput::OnSettingChanged()
 {
 	Refresh();
@@ -143,8 +143,21 @@ void ULyraSettingsListEntrySetting_KeyboardInput::Refresh()
 {
 	if (ensure(KeyboardInputSetting))
 	{
-		Button_PrimaryKey->SetButtonText(KeyboardInputSetting->GetPrimaryKeyText());
-		Button_SecondaryKey->SetButtonText(KeyboardInputSetting->GetSecondaryKeyText());
+		Button_PrimaryKey->SetButtonText(KeyboardInputSetting->GetKeyTextFromSlot(EPlayerMappableKeySlot::First));
+		Button_SecondaryKey->SetButtonText(KeyboardInputSetting->GetKeyTextFromSlot(EPlayerMappableKeySlot::Second));
+
+		// Only display the reset to default button if a mapping is customized
+		if (ensure(Button_ResetToDefault))
+		{
+			if (KeyboardInputSetting->IsMappingCustomized())
+			{
+				Button_ResetToDefault->SetVisibility(ESlateVisibility::Visible);
+			}
+			else
+			{
+				Button_ResetToDefault->SetVisibility(ESlateVisibility::Hidden);
+			}
+		}
 	}
 }
 

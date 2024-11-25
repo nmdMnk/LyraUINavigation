@@ -12,7 +12,7 @@ class UMaterialInterface;
 class UWidgetAnimation;
 
 UCLASS(Abstract, meta = (DisableNativeTick))
-class LYRAUINAVIGATION_API UMaterialProgressBar : public UCommonUserWidget
+class UMaterialProgressBar : public UCommonUserWidget
 {
 	GENERATED_BODY()
 
@@ -28,25 +28,25 @@ protected:
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void SetProgress(float Progress);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void SetStartProgress(float StartProgress);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void SetColorA(FLinearColor ColorA);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void SetColorB(FLinearColor ColorB);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void SetColorBackground(FLinearColor ColorBackground);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void AnimateProgressFromStart(float Start, float End, float AnimSpeed = 1.0f);
 
-	UFUNCTION(BlueprintCallable, Category = "Material Progress Bar")
+	UFUNCTION(BlueprintCallable)
 	void AnimateProgressFromCurrent(float End, float AnimSpeed = 1.0f);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFillAnimationFinished);
@@ -64,78 +64,78 @@ private:
 
 	UMaterialInstanceDynamic* GetBarDynamicMaterial() const;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "CachedColorA"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "CachedColorA"))
 	bool bOverrideDefaultColorA = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (DisplayName = "Color A", EditCondition = "bOverrideDefaultColorA"))
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Color A", EditCondition = "bOverrideDefaultColorA"))
 	FLinearColor CachedColorA;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "CachedColorB"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "CachedColorB"))
 	bool bOverrideDefaultColorB = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (DisplayName = "Color B", EditCondition = "bOverrideDefaultColorB"))
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Color B", EditCondition = "bOverrideDefaultColorB"))
 	FLinearColor CachedColorB;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "CachedColorBackground"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "CachedColorBackground"))
 	bool bOverrideDefaultColorBackground;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (DisplayName = "Color Background", EditCondition = "bOverrideDefaultColorBackground"))
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Color Background", EditCondition = "bOverrideDefaultColorBackground"))
 	FLinearColor CachedColorBackground;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "Segments"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "Segments"))
 	bool bOverrideDefaultSegments = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultSegments"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultSegments"))
 	int32 Segments;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "SegmentEdge"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "SegmentEdge"))
 	bool bOverrideDefaultSegmentEdge = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultSegmentEdge"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultSegmentEdge"))
 	float SegmentEdge;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "FillEdgeSoftness"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "FillEdgeSoftness"))
 	bool bOverrideDefaultFillEdgeSoftness;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultFillEdgeSoftness"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultFillEdgeSoftness"))
 	float FillEdgeSoftness;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "GlowEdge"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "GlowEdge"))
 	bool bOverrideDefaultGlowEdge = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultGlowEdge"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultGlowEdge"))
 	float GlowEdge;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "GlowSoftness"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "GlowSoftness"))
 	bool bOverrideDefaultGlowSoftness = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultGlowSoftness"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultGlowSoftness"))
 	float GlowSoftness;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (InlineEditConditionToggle = "OutlineScale"))
+	UPROPERTY(EditAnywhere, meta = (InlineEditConditionToggle = "OutlineScale"))
 	bool bOverrideDefaultOutlineScale = false;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (EditCondition = "bOverrideDefaultOutlineScale"))
+	UPROPERTY(EditAnywhere, meta = (EditCondition = "bOverrideDefaultOutlineScale"))
 	float OutlineScale;
 
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar")
+	UPROPERTY(EditAnywhere)
 	bool bUseStroke = true;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Material Progress Bar")
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMaterialInterface> StrokeMaterial;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Material Progress Bar")
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMaterialInterface> NoStrokeMaterial;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditAnywhere, Category = "Material Progress Bar", meta = (DisplayName = "Design Time Progress"))
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Design Time Progress"))
 	float DesignTime_Progress = 1.0f;
 #endif
 
-	UPROPERTY(BlueprintReadOnly, Category = "Material Progress Bar", meta = (BindWidget, AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess))
 	TObjectPtr<UImage> Image_Bar;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Material Progress Bar", Transient, meta = (BindWidgetAnim, AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Transient, meta = (BindWidgetAnim, AllowPrivateAccess))
 	TObjectPtr<UWidgetAnimation> BoundAnim_FillBar;
 
 	UPROPERTY(Transient)

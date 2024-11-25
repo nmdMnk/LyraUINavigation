@@ -1,25 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CommonInputBaseTypes.h"
-#include "Containers/Array.h"
-#include "DataSource/GameSettingDataSourceDynamic.h"
-#include "Engine/PlatformSettingsManager.h"
+#include "DataSource/GameSettingDataSource.h"
 #include "GameSettingCollection.h"
 #include "GameSettingValueDiscreteDynamic.h"
 #include "GameSettingValueScalarDynamic.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Internationalization.h"
-#include "Internationalization/Text.h"
 #include "Settings/LyraGameSettingRegistry.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Settings/LyraSettingsShared.h"
 #include "NativeGameplayTags.h"
 #include "Player/LyraLocalPlayer.h"
-#include "Templates/SubclassOf.h"
-#include "UObject/NameTypes.h"
-#include "UObject/SoftObjectPtr.h"
-#include "UObject/UObjectGlobals.h"
-#include "UObject/UnrealNames.h"
 
 #define LOCTEXT_NAMESPACE "Lyra"
 
@@ -40,7 +30,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeGamepadSettings(ULyr
 		Hardware->SetDevName(TEXT("HardwareCollection"));
 		Hardware->SetDisplayName(LOCTEXT("HardwareCollection_Name", "Hardware"));
 		Screen->AddSetting(Hardware);
-			
+
 		//----------------------------------------------------------------------------------
 		{
 			UGameSettingValueDiscreteDynamic* Setting = NewObject<UGameSettingValueDiscreteDynamic>();
@@ -49,7 +39,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeGamepadSettings(ULyr
 			Setting->SetDescriptionRichText(LOCTEXT("ControllerHardware_Description", "The type of controller you're using."));
 			Setting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetControllerPlatform));
 			Setting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetControllerPlatform));
-			
+
 			if (UCommonInputPlatformSettings* PlatformInputSettings = UPlatformSettingsManager::Get().GetSettingsForPlatform<UCommonInputPlatformSettings>())
 			{
 				const TArray<TSoftClassPtr<UCommonInputBaseControllerData>>& ControllerDatas = PlatformInputSettings->GetControllerData();
@@ -154,14 +144,14 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeGamepadSettings(ULyr
 			LOCTEXT("EFortGamepadSensitivity_FastPlusPlus", "9 (Fast++)"),
 			LOCTEXT("EFortGamepadSensitivity_Insane", "10 (Insane)"),
 		};
-		
+
 		//----------------------------------------------------------------------------------
 		{
 			UGameSettingValueDiscreteDynamic_Enum* Setting = NewObject<UGameSettingValueDiscreteDynamic_Enum>();
 			Setting->SetDevName(TEXT("LookSensitivityPreset"));
 			Setting->SetDisplayName(LOCTEXT("LookSensitivityPreset_Name", "Look Sensitivity"));
 			Setting->SetDescriptionRichText(LOCTEXT("LookSensitivityPreset_Description", "How quickly your view rotates."));
-			
+
 			Setting->SetDynamicGetter(GET_SHARED_SETTINGS_FUNCTION_PATH(GetGamepadLookSensitivityPreset));
 			Setting->SetDynamicSetter(GET_SHARED_SETTINGS_FUNCTION_PATH(SetLookSensitivityPreset));
 			Setting->SetDefaultValue(GetDefault<ULyraSettingsShared>()->GetGamepadLookSensitivityPreset());
@@ -170,7 +160,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeGamepadSettings(ULyr
 			{
 				Setting->AddEnumOption(static_cast<ELyraGamepadSensitivity>(PresetIndex), EGamepadSensitivityText[PresetIndex]);
 			}
-			
+
 			BasicSensitivity->AddSetting(Setting);
 		}
 		//----------------------------------------------------------------------------------
@@ -179,7 +169,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeGamepadSettings(ULyr
 			Setting->SetDevName(TEXT("LookSensitivityPresetAds"));
 			Setting->SetDisplayName(LOCTEXT("LookSensitivityPresetAds_Name", "Aim Sensitivity (ADS)"));
 			Setting->SetDescriptionRichText(LOCTEXT("LookSensitivityPresetAds_Description", "How quickly your view rotates while aiming down sights (ADS)."));
-			
+
 			Setting->SetDynamicGetter(GET_SHARED_SETTINGS_FUNCTION_PATH(GetGamepadTargetingSensitivityPreset));
 			Setting->SetDynamicSetter(GET_SHARED_SETTINGS_FUNCTION_PATH(SetGamepadTargetingSensitivityPreset));
 			Setting->SetDefaultValue(GetDefault<ULyraSettingsShared>()->GetGamepadTargetingSensitivityPreset());

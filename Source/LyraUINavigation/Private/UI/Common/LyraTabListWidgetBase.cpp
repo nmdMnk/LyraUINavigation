@@ -2,17 +2,8 @@
 
 #include "UI/Common/LyraTabListWidgetBase.h"
 
-#include "Blueprint/UserWidget.h"
 #include "CommonAnimatedSwitcher.h"
 #include "CommonButtonBase.h"
-#include "CommonUserWidget.h"
-#include "Components/SlateWrapperTypes.h"
-#include "Components/Widget.h"
-#include "Containers/UnrealString.h"
-#include "Misc/AssertionMacros.h"
-#include "Templates/Casts.h"
-#include "Templates/SharedPointer.h"
-#include "UObject/Class.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraTabListWidgetBase)
 
@@ -45,9 +36,9 @@ void ULyraTabListWidgetBase::NativeDestruct()
 bool ULyraTabListWidgetBase::GetPreregisteredTabInfo(const FName TabNameId, FLyraTabDescriptor& OutTabInfo)
 {
 	const FLyraTabDescriptor* const FoundTabInfo = PreregisteredTabInfoArray.FindByPredicate([&](FLyraTabDescriptor& TabInfo) -> bool
-	{
-		return TabInfo.TabId == TabNameId;
-	});
+		{
+			return TabInfo.TabId == TabNameId;
+		});
 
 	if (!FoundTabInfo)
 	{
@@ -77,7 +68,7 @@ bool ULyraTabListWidgetBase::RegisterDynamicTab(const FLyraTabDescriptor& TabDes
 	{
 		return true;
 	}
-	
+
 	PendingTabLabelInfoMap.Add(TabDescriptor.TabId, TabDescriptor);
 
 	return RegisterTab(TabDescriptor.TabId, TabDescriptor.TabButtonType, TabDescriptor.CreatedTabContentWidget);
@@ -111,7 +102,7 @@ void ULyraTabListWidgetBase::HandlePostLinkedSwitcherChanged()
 void ULyraTabListWidgetBase::HandleTabCreation_Implementation(FName TabId, UCommonButtonBase* TabButton)
 {
 	FLyraTabDescriptor* TabInfoPtr = nullptr;
-	
+
 	FLyraTabDescriptor TabInfo;
 	if (GetPreregisteredTabInfo(TabId, TabInfo))
 	{
@@ -121,7 +112,7 @@ void ULyraTabListWidgetBase::HandleTabCreation_Implementation(FName TabId, UComm
 	{
 		TabInfoPtr = PendingTabLabelInfoMap.Find(TabId);
 	}
-	
+
 	if (TabButton->GetClass()->ImplementsInterface(ULyraTabButtonInterface::StaticClass()))
 	{
 		if (ensureMsgf(TabInfoPtr, TEXT("A tab button was created with id %s but no label info was specified. RegisterDynamicTab should be used over RegisterTab to provide label info."), *TabId.ToString()))
@@ -170,9 +161,9 @@ int32 ULyraTabListWidgetBase::GetVisibleTabCount()
 {
 	int32 Result = 0;
 	const int32 TabCount = GetTabCount();
-	for ( int32 Index = 0; Index < TabCount; Index++ )
+	for (int32 Index = 0; Index < TabCount; Index++)
 	{
-		if (IsTabVisible(GetTabIdAtIndex( Index )))
+		if (IsTabVisible(GetTabIdAtIndex(Index)))
 		{
 			Result++;
 		}

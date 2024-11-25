@@ -3,9 +3,7 @@
 #pragma once
 
 #include "CommonUserWidget.h"
-#include "Components/SlateWrapperTypes.h"
 #include "GameplayTagContainer.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraTaggedWidget.generated.h"
 
@@ -15,7 +13,7 @@ class UObject;
  * An widget in a layout that has been tagged (can be hidden or shown via tags on the owning player)
  */
 UCLASS(Abstract, Blueprintable)
-class LYRAUINAVIGATION_API ULyraTaggedWidget : public UCommonUserWidget
+class ULyraTaggedWidget : public UCommonUserWidget
 {
 	GENERATED_BODY()
 

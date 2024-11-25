@@ -1,42 +1,22 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Containers/Array.h"
-#include "Containers/UnrealString.h"
 #include "Settings/CustomSettings/LyraSettingAction_SafeZoneEditor.h"
 #include "Settings/CustomSettings/LyraSettingValueDiscrete_MobileFPSType.h"
 #include "Settings/CustomSettings/LyraSettingValueDiscrete_OverallQuality.h"
 #include "Settings/CustomSettings/LyraSettingValueDiscrete_Resolution.h"
-#include "DataSource/GameSettingDataSourceDynamic.h"
+#include "DataSource/GameSettingDataSource.h"
 #include "EditCondition/WhenCondition.h"
 #include "EditCondition/WhenPlatformHasTrait.h"
 #include "EditCondition/WhenPlayingAsPrimaryPlayer.h"
-#include "Engine/LocalPlayer.h"
 #include "Framework/Application/SlateApplication.h"
-#include "GameSetting.h"
-#include "GameSettingAction.h"
 #include "GameSettingCollection.h"
-#include "GameSettingFilterState.h"
 #include "GameSettingValueDiscreteDynamic.h"
-#include "GameSettingValueScalarDynamic.h"
-#include "GenericPlatform/GenericApplication.h"
-#include "GenericPlatform/GenericWindow.h"
-#include "HAL/PlatformMisc.h"
-#include "Internationalization/Internationalization.h"
-#include "Internationalization/Text.h"
 #include "Settings/LyraGameSettingRegistry.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Settings/LyraSettingsShared.h"
-#include "Math/Range.h"
-#include "Math/UnrealMathSSE.h"
-#include "Math/Vector2D.h"
-#include "Math/Vector4.h"
 #include "NativeGameplayTags.h"
 #include "Performance/LyraPerformanceSettings.h"
 #include "Player/LyraLocalPlayer.h"
-#include "Templates/Casts.h"
-#include "Templates/SharedPointer.h"
-#include "UObject/NameTypes.h"
-#include "UObject/UObjectGlobals.h"
 
 #define LOCTEXT_NAMESPACE "Lyra"
 
@@ -63,10 +43,10 @@ public:
 	{
 	}
 
-	virtual void GatherEditState(const ULocalPlayer * InLocalPlayer, FGameSettingEditableState & InOutEditState) const override
+	virtual void GatherEditState(const ULocalPlayer* InLocalPlayer, FGameSettingEditableState& InOutEditState) const override
 	{
 		const ELyraFramePacingMode ActualMode = ULyraPlatformSpecificRenderingSettings::Get()->FramePacingMode;
-		
+
 		const bool bMatches = (ActualMode == DesiredMode);
 		const bool bMatchesAreBad = (MatchMode == EFramePacingEditCondition::DisableIf);
 
@@ -159,12 +139,12 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 			Setting->AddEditDependency(WindowModeSetting);
 			Setting->AddEditCondition(FWhenPlatformHasTrait::KillIfMissing(TAG_Platform_Trait_SupportsWindowedMode, TEXT("Platform does not support window mode")));
 			Setting->AddEditCondition(MakeShared<FWhenCondition>([WindowModeSetting](const ULocalPlayer*, FGameSettingEditableState& InOutEditState)
-			{
-				if (WindowModeSetting->GetValue<EWindowMode::Type>() == EWindowMode::WindowedFullscreen)
 				{
-					InOutEditState.Disable(LOCTEXT("ResolutionWindowedFullscreen_Disabled", "When the Window Mode is set to <strong>Windowed Fullscreen</>, the resolution must match the native desktop resolution."));
-				}
-			}));
+					if (WindowModeSetting->GetValue<EWindowMode::Type>() == EWindowMode::WindowedFullscreen)
+					{
+						InOutEditState.Disable(LOCTEXT("ResolutionWindowedFullscreen_Disabled", "When the Window Mode is set to <strong>Windowed Fullscreen</>, the resolution must match the native desktop resolution."));
+					}
+				}));
 
 			Display->AddSetting(Setting);
 		}
@@ -184,7 +164,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 			Setting->SetDevName(TEXT("ColorBlindMode"));
 			Setting->SetDisplayName(LOCTEXT("ColorBlindMode_Name", "Color Blind Mode"));
 			Setting->SetDescriptionRichText(LOCTEXT("ColorBlindMode_Description", "Using the provided images, test out the different color blind modes to find a color correction that works best for you."));
-			
+
 			Setting->SetDynamicGetter(GET_SHARED_SETTINGS_FUNCTION_PATH(GetColorBlindMode));
 			Setting->SetDynamicSetter(GET_SHARED_SETTINGS_FUNCTION_PATH(SetColorBlindMode));
 			Setting->SetDefaultValue(GetDefault<ULyraSettingsShared>()->GetColorBlindMode());
@@ -228,7 +208,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 			Setting->SetDefaultValue(2.2);
 			Setting->SetDisplayFormat([](double SourceValue, double NormalizedValue) {
 				return FText::Format(LOCTEXT("BrightnessFormat", "{0}%"), (int32)FMath::GetMappedRangeValueClamped(FVector2D(0, 1), FVector2D(50, 150), NormalizedValue));
-			});
+				});
 			Setting->SetSourceRangeAndStep(TRange<double>(1.7, 2.7), 0.01);
 
 			Setting->AddEditCondition(FWhenPlayingAsPrimaryPlayer::Get());
@@ -253,7 +233,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 				{
 					InOutEditState.Kill(TEXT("Platform does not have any TitleSafePaddingSize configured in the display metrics."));
 				}
-			}));
+				}));
 
 			Graphics->AddSetting(Setting);
 		}
@@ -324,34 +304,34 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 			Setting->SetDoesActionDirtySettings(true);
 			Setting->SetActionText(LOCTEXT("AutoSetQuality_Action", "Auto-Set"));
 			Setting->SetCustomAction([](ULocalPlayer* LocalPlayer)
-			{
-				const ULyraPlatformSpecificRenderingSettings* PlatformSettings = ULyraPlatformSpecificRenderingSettings::Get();
-				if (PlatformSettings->FramePacingMode == ELyraFramePacingMode::MobileStyle)
 				{
-					ULyraSettingsLocal::Get()->ResetToMobileDeviceDefaults();
-				}
-				else
-				{
-					const ULyraLocalPlayer* LyraLocalPlayer = CastChecked<ULyraLocalPlayer>(LocalPlayer);
-					// We don't save state until users apply the settings.
-					constexpr bool bImmediatelySaveState = false;
-					LyraLocalPlayer->GetLocalSettings()->RunAutoBenchmark(bImmediatelySaveState);
-				}
-			});
+					const ULyraPlatformSpecificRenderingSettings* PlatformSettings = ULyraPlatformSpecificRenderingSettings::Get();
+					if (PlatformSettings->FramePacingMode == ELyraFramePacingMode::MobileStyle)
+					{
+						ULyraSettingsLocal::Get()->ResetToMobileDeviceDefaults();
+					}
+					else
+					{
+						const ULyraLocalPlayer* LyraLocalPlayer = CastChecked<ULyraLocalPlayer>(LocalPlayer);
+						// We don't save state until users apply the settings.
+						constexpr bool bImmediatelySaveState = false;
+						LyraLocalPlayer->GetLocalSettings()->RunAutoBenchmark(bImmediatelySaveState);
+					}
+				});
 
 			Setting->AddEditCondition(MakeShared<FWhenCondition>([](const ULocalPlayer* LocalPlayer, FGameSettingEditableState& InOutEditState)
-			{
-				const ULyraPlatformSpecificRenderingSettings* PlatformSettings = ULyraPlatformSpecificRenderingSettings::Get();
-				const bool bCanUseDueToMobile = (PlatformSettings->FramePacingMode == ELyraFramePacingMode::MobileStyle);
-
-				const ULyraLocalPlayer* LyraLocalPlayer = CastChecked<ULyraLocalPlayer>(LocalPlayer);
-				const bool bCanBenchmark = LyraLocalPlayer->GetLocalSettings()->CanRunAutoBenchmark();
-
-				if (!bCanUseDueToMobile && !bCanBenchmark)
 				{
-					InOutEditState.Kill(TEXT("Auto quality not supported"));
-				}
-			}));
+					const ULyraPlatformSpecificRenderingSettings* PlatformSettings = ULyraPlatformSpecificRenderingSettings::Get();
+					const bool bCanUseDueToMobile = (PlatformSettings->FramePacingMode == ELyraFramePacingMode::MobileStyle);
+
+					const ULyraLocalPlayer* LyraLocalPlayer = CastChecked<ULyraLocalPlayer>(LocalPlayer);
+					const bool bCanBenchmark = LyraLocalPlayer->GetLocalSettings()->CanRunAutoBenchmark();
+
+					if (!bCanUseDueToMobile && !bCanBenchmark)
+					{
+						InOutEditState.Kill(TEXT("Auto quality not supported"));
+					}
+				}));
 
 			if (MobileFPSType != nullptr)
 			{
@@ -570,7 +550,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 			UGameSettingValueDiscreteDynamic_Number* Setting = NewObject<UGameSettingValueDiscreteDynamic_Number>();
 			Setting->SetDevName(TEXT("PostProcessingQuality"));
 			Setting->SetDisplayName(LOCTEXT("PostProcessingQuality_Name", "Post Processing"));
-			Setting->SetDescriptionRichText(LOCTEXT("PostProcessingQuality_Description", "Post Processing effects include Motion Blur, Depth of Field and Bloom. Increasing this setting improves the quality of post process effects, but can reduce performance."));  
+			Setting->SetDescriptionRichText(LOCTEXT("PostProcessingQuality_Description", "Post Processing effects include Motion Blur, Depth of Field and Bloom. Increasing this setting improves the quality of post process effects, but can reduce performance."));
 
 			Setting->SetDynamicGetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(GetPostProcessingQuality));
 			Setting->SetDynamicSetter(GET_LOCAL_SETTINGS_FUNCTION_PATH(SetPostProcessingQuality));
@@ -618,7 +598,7 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeVideoSettings(ULyraL
 				{
 					InOutEditState.Disable(LOCTEXT("FullscreenNeededForVSync", "This feature only works if 'Window Mode' is set to 'Fullscreen'."));
 				}
-			}));
+				}));
 
 			AdvancedGraphics->AddSetting(Setting);
 		}

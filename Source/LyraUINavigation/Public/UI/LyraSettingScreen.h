@@ -3,8 +3,6 @@
 #pragma once
 
 #include "Engine/DataTable.h"
-#include "Input/UIActionBindingHandle.h"
-#include "UObject/UObjectGlobals.h"
 #include "Widgets/GameSettingScreen.h"
 
 #include "LyraSettingScreen.generated.h"
@@ -14,7 +12,7 @@ class ULyraTabListWidgetBase;
 class UObject;
 
 UCLASS(Abstract, meta = (Category = "Settings", DisableNativeTick))
-class LYRAUINAVIGATION_API ULyraSettingScreen : public UGameSettingScreen
+class ULyraSettingScreen : public UGameSettingScreen
 {
 	GENERATED_BODY()
 
@@ -34,13 +32,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = Input, meta = (BindWidget, OptionalWidget = true, AllowPrivateAccess = true))
 	TObjectPtr<ULyraTabListWidgetBase> TopSettingsTabs;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Setting Screen")
+	UPROPERTY(EditDefaultsOnly)
 	FDataTableRowHandle BackInputActionData;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Setting Screen")
+	UPROPERTY(EditDefaultsOnly)
 	FDataTableRowHandle ApplyInputActionData;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Lyra Setting Screen")
+	UPROPERTY(EditDefaultsOnly)
 	FDataTableRowHandle CancelChangesInputActionData;
 
 	FUIActionBindingHandle BackHandle;

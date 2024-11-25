@@ -2,13 +2,10 @@
 
 #include "Settings/LyraGameSettingRegistry.h"
 
-#include "Engine/LocalPlayer.h"
 #include "GameSettingCollection.h"
-#include "HAL/Platform.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Settings/LyraSettingsShared.h"
 #include "Player/LyraLocalPlayer.h"
-#include "Templates/Casts.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraGameSettingRegistry)
 
@@ -78,12 +75,12 @@ void ULyraGameSettingRegistry::OnInitialize(ULocalPlayer* InLocalPlayer)
 void ULyraGameSettingRegistry::SaveChanges()
 {
 	Super::SaveChanges();
-	
+
 	if (ULyraLocalPlayer* LocalPlayer = Cast<ULyraLocalPlayer>(OwningLocalPlayer))
 	{
 		// Game user settings need to be applied to handle things like resolution, this saves indirectly
 		LocalPlayer->GetLocalSettings()->ApplySettings(false);
-		
+
 		LocalPlayer->GetSharedSettings()->ApplySettings();
 		LocalPlayer->GetSharedSettings()->SaveSettings();
 	}

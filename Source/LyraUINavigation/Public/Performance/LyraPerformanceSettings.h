@@ -2,15 +2,9 @@
 
 #pragma once
 
-#include "Containers/Array.h"
-#include "Containers/Set.h"
-#include "Containers/UnrealString.h"
 #include "Engine/DeveloperSettingsBackedByCVars.h"
 #include "Engine/PlatformSettings.h"
 #include "GameplayTagContainer.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Text.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraPerformanceSettings.generated.h"
 
@@ -18,22 +12,22 @@ class UObject;
 
 // Describes one platform-specific device profile variant that the user can choose from in the UI
 USTRUCT()
-struct LYRAUINAVIGATION_API FLyraQualityDeviceProfileVariant
+struct FLyraQualityDeviceProfileVariant
 {
 	GENERATED_BODY()
 
 	// The display name for this device profile variant (visible in the options screen)
-	UPROPERTY(EditAnywhere, Category = "Lyra Device Profile")
+	UPROPERTY(EditAnywhere)
 	FText DisplayName;
 
 	// The suffix to append to the base device profile name for the current platform
-	UPROPERTY(EditAnywhere, Category = "Lyra Device Profile")
+	UPROPERTY(EditAnywhere)
 	FString DeviceProfileSuffix;
 
 	// The minimum required refresh rate to enable this mode
 	// (e.g., if this is set to 120 Hz and the device is connected
 	// to a 60 Hz display, it won't be available)
-	UPROPERTY(EditAnywhere, Category = "Lyra Device Profile")
+	UPROPERTY(EditAnywhere)
 	int32 MinRefreshRate = 0;
 };
 
@@ -52,7 +46,7 @@ enum class ELyraFramePacingMode : uint8
 };
 
 UCLASS(config=Game, defaultconfig)
-class LYRAUINAVIGATION_API ULyraPlatformSpecificRenderingSettings : public UPlatformSettings
+class ULyraPlatformSpecificRenderingSettings : public UPlatformSettings
 {
 	GENERATED_BODY()
 

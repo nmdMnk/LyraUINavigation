@@ -34,7 +34,7 @@ void ULyraButtonBase::RefreshButtonText()
 	{
 		if (InputActionWidget)
 		{
-			const FText ActionDisplayText = InputActionWidget->GetDisplayText();	
+			const FText ActionDisplayText = InputActionWidget->GetDisplayText();
 			if (!ActionDisplayText.IsEmpty())
 			{
 				UpdateButtonText(ActionDisplayText);
@@ -42,8 +42,8 @@ void ULyraButtonBase::RefreshButtonText()
 			}
 		}
 	}
-	
-	UpdateButtonText(ButtonText);	
+
+	UpdateButtonText(ButtonText);
 }
 
 void ULyraButtonBase::OnInputMethodChanged(ECommonInputType CurrentInputType)

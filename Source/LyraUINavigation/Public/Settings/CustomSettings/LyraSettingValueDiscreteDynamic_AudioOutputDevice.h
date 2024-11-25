@@ -3,11 +3,7 @@
 #pragma once
 
 #include "AudioMixerBlueprintLibrary.h"
-#include "Containers/Array.h"
-#include "Containers/UnrealString.h"
 #include "GameSettingValueDiscreteDynamic.h"
-#include "HAL/Platform.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingValueDiscreteDynamic_AudioOutputDevice.generated.h"
 
@@ -17,7 +13,7 @@ struct FFrame;
 enum class EAudioDeviceChangedRole : uint8;
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingValueDiscreteDynamic_AudioOutputDevice : public UGameSettingValueDiscreteDynamic
+class ULyraSettingValueDiscreteDynamic_AudioOutputDevice : public UGameSettingValueDiscreteDynamic
 {
 	GENERATED_BODY()
 	

@@ -3,10 +3,6 @@
 #pragma once
 
 #include "CommonButtonBase.h"
-#include "CommonInputBaseTypes.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Text.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraButtonBase.generated.h"
 
@@ -19,7 +15,7 @@ class LYRAUINAVIGATION_API ULyraButtonBase : public UCommonButtonBase
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Lyra Button")
+	UFUNCTION(BlueprintCallable)
 	void SetButtonText(const FText& InText);
 	
 protected:

@@ -3,14 +3,11 @@
 #pragma once
 
 #include "CommonActivatableWidget.h"
-#include "CommonInputBaseTypes.h"
-#include "Delegates/Delegate.h"
-#include "Input/Reply.h"
-#include "UObject/UObjectGlobals.h"
-#include "UObject/WeakObjectPtrTemplates.h"
 #include "Widgets/IGameSettingActionInterface.h"
 
 #include "LyraSafeZoneEditor.generated.h"
+
+enum class ECommonInputType : uint8;
 
 class UCommonButtonBase;
 class UCommonRichTextBlock;
@@ -25,7 +22,7 @@ struct FGeometry;
 struct FPointerEvent;
 
 UCLASS(Abstract)
-class LYRAUINAVIGATION_API ULyraSafeZoneEditor : public UCommonActivatableWidget, public IGameSettingActionInterface
+class ULyraSafeZoneEditor : public UCommonActivatableWidget, public IGameSettingActionInterface
 {
 	GENERATED_BODY()
 
@@ -60,15 +57,15 @@ private:
 
 	TWeakObjectPtr<UGameSettingValueScalar> ValueSetting;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Safe Zone Editor", meta = (BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UWidgetSwitcher> Switcher_SafeZoneMessage;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Safe Zone Editor", meta = (BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UCommonRichTextBlock> RichText_Default;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Safe Zone Editor", meta = (BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UCommonButtonBase> Button_Back;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra Safe Zone Editor", meta = (BindWidget, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UCommonButtonBase> Button_Done;
 };

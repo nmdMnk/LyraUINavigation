@@ -2,8 +2,7 @@
 
 #include "Input/LyraAimSensitivityData.h"
 
-#include "Containers/Set.h"
-#include "initializer_list"
+#include "Settings/LyraSettingsShared.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraAimSensitivityData)
 

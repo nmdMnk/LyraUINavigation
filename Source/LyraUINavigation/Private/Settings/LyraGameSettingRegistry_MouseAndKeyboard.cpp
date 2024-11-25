@@ -1,40 +1,18 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "CommonInputBaseTypes.h"
-#include "Containers/Array.h"
-#include "Containers/Map.h"
-#include "Containers/Set.h"
-#include "Containers/UnrealString.h"
+#include "EnhancedInputSubsystems.h"
 #include "Settings/CustomSettings/LyraSettingKeyboardInput.h"
-#include "DataSource/GameSettingDataSourceDynamic.h"
+#include "DataSource/GameSettingDataSource.h"
 #include "EditCondition/WhenCondition.h"
-#include "Engine/PlatformSettingsManager.h"
-#include "EnhancedActionKeyMapping.h"
-#include "GameSetting.h"
 #include "GameSettingCollection.h"
-#include "GameSettingFilterState.h"
 #include "GameSettingValueDiscreteDynamic.h"
 #include "GameSettingValueScalarDynamic.h"
-#include "HAL/Platform.h"
-#include "Input/LyraMappableConfigPair.h"
-#include "InputCoreTypes.h"
-#include "Internationalization/Internationalization.h"
-#include "Internationalization/Text.h"
-#include "Logging/LogCategory.h"
-#include "Logging/LogMacros.h"
 #include "Settings/LyraGameSettingRegistry.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Settings/LyraSettingsShared.h"
-#include "Math/Range.h"
-#include "Misc/AssertionMacros.h"
 #include "Player/LyraLocalPlayer.h"
 #include "PlayerMappableInputConfig.h"
-#include "Templates/Casts.h"
-#include "Templates/SharedPointer.h"
-#include "Trace/Detail/Channel.h"
-#include "UObject/NameTypes.h"
-#include "UObject/UObjectGlobals.h"
-#include "UObject/UnrealNames.h"
 
 class ULocalPlayer;
 
@@ -159,80 +137,77 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeMouseAndKeyboardSett
 		KeyBinding->SetDevName(TEXT("KeyBindingCollection"));
 		KeyBinding->SetDisplayName(LOCTEXT("KeyBindingCollection_Name", "Keyboard & Mouse"));
 		Screen->AddSetting(KeyBinding);
-		static TSet<FName> AddedSettings;
-		AddedSettings.Reset();
 
-		//----------------------------------------------------------------------------------
-		{
-			const TArray<FLoadedMappableConfigPair>& RegisteredConfigs = InLocalPlayer->GetLocalSettings()->GetAllRegisteredInputConfigs();	
-			const TMap<FName, FKey>& CustomKeyMap = InLocalPlayer->GetLocalSettings()->GetCustomPlayerInputConfig();
-			
-			for (const FLoadedMappableConfigPair& InputConfigPair : RegisteredConfigs)
+		const UEnhancedInputLocalPlayerSubsystem* EISubsystem = InLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+		const UEnhancedInputUserSettings* UserSettings = EISubsystem->GetUserSettings();
+
+		// If you want to just get one profile pair, then you can do UserSettings->GetCurrentProfile
+
+		// A map of key bindings mapped to their display category
+		TMap<FString, UGameSettingCollection*> CategoryToSettingCollection;
+
+		// Returns an existing setting collection for the display category if there is one.
+		// If there isn't one, then it will create a new one and initialize it
+		auto GetOrCreateSettingCollection = [&CategoryToSettingCollection, &Screen](FText DisplayCategory) -> UGameSettingCollection*
 			{
-				if (InputConfigPair.Type != ECommonInputType::MouseAndKeyboard)
+				static const FString DefaultDevName = TEXT("Default_KBM");
+				static const FText DefaultDevDisplayName = NSLOCTEXT("LyraInputSettings", "LyraInputDefaults", "Default Experiences");
+
+				if (DisplayCategory.IsEmpty())
 				{
-					continue;
+					DisplayCategory = DefaultDevDisplayName;
 				}
-				
-				TArray<FEnhancedActionKeyMapping> ConfigMappings = InputConfigPair.Config->GetPlayerMappableKeys();
-				if (ConfigMappings.IsEmpty())
+
+				FString DisplayCatString = DisplayCategory.ToString();
+
+				if (UGameSettingCollection** ExistingCategory = CategoryToSettingCollection.Find(DisplayCatString))
 				{
-					UE_LOG(LogLyraGameSettingRegistry, Warning, TEXT("PlayerMappableInputConfig '%s' has no player mappable keys in it! Skipping it in the setting registry..."), *InputConfigPair.Config->GetConfigName().ToString());
-					continue;
+					return *ExistingCategory;
 				}
-				
+
 				UGameSettingCollection* ConfigSettingCollection = NewObject<UGameSettingCollection>();
-				ConfigSettingCollection->SetDevName(InputConfigPair.Config->GetConfigName());
-				ConfigSettingCollection->SetDisplayName(InputConfigPair.Config->GetDisplayName());
+				ConfigSettingCollection->SetDevName(FName(DisplayCatString));
+				ConfigSettingCollection->SetDisplayName(DisplayCategory);
 				Screen->AddSetting(ConfigSettingCollection);
-				
-				// Add each player mappable key to the settings screen!
-				for (FEnhancedActionKeyMapping& Mapping : ConfigMappings)
+				CategoryToSettingCollection.Add(DisplayCatString, ConfigSettingCollection);
+
+				return ConfigSettingCollection;
+			};
+
+		static TSet<FName> CreatedMappingNames;
+		CreatedMappingNames.Reset();
+
+		for (const TPair<FGameplayTag, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair : UserSettings->GetAllSavedKeyProfiles())
+		{
+			const FGameplayTag& ProfileName = ProfilePair.Key;
+			const TObjectPtr<UEnhancedPlayerMappableKeyProfile>& Profile = ProfilePair.Value;
+
+			for (const TPair<FName, FKeyMappingRow>& RowPair : Profile->GetPlayerMappingRows())
+			{
+				// Create a setting row for anything with valid mappings and that we haven't created yet
+				if (RowPair.Value.HasAnyMappings() /* && !CreatedMappingNames.Contains(RowPair.Key)*/)
 				{
-					ULyraSettingKeyboardInput* ExistingSetting = nullptr;
+					// We only want keyboard keys on this settings screen, so we will filter down by mappings
+					// that are set to keyboard keys
+					FPlayerMappableKeyQueryOptions Options = {};
+					Options.KeyToMatch = EKeys::W;
+					Options.bMatchBasicKeyTypes = true;
 
-					// Make sure that we cannot add two settings with the same FName for saving purposes
-					if (AddedSettings.Contains(Mapping.PlayerMappableOptions.Name))
-					{
-						UE_LOG(LogLyraGameSettingRegistry, Warning, TEXT("A setting with the name '%s' from config '%s' has already been added! Please remove duplicate name."), *Mapping.PlayerMappableOptions.Name.ToString(), *InputConfigPair.Config->GetConfigName().ToString());
-						continue;
-					}
-					
-					for (UGameSetting* Setting : ConfigSettingCollection->GetChildSettings())
-					{
-						ULyraSettingKeyboardInput* LyraKeyboardSetting = Cast<ULyraSettingKeyboardInput>(Setting);
-						if (LyraKeyboardSetting->GetSettingDisplayName().EqualToCaseIgnored(Mapping.PlayerMappableOptions.DisplayName))
-						{
-							ExistingSetting = LyraKeyboardSetting;
-							break;
-						}
-					}
-					
-					FEnhancedActionKeyMapping MappingSynthesized(Mapping);
-					// If the player has bound a custom key to this action, then set it to that
-					if (const FKey* PlayerBoundKey = CustomKeyMap.Find(Mapping.PlayerMappableOptions.Name))
-					{
-						MappingSynthesized.Key = *PlayerBoundKey;
-					}
+					const FText& DesiredDisplayCategory = RowPair.Value.Mappings.begin()->GetDisplayCategory();
 
-					if (MappingSynthesized.PlayerMappableOptions.Name != NAME_None && !MappingSynthesized.PlayerMappableOptions.DisplayName.IsEmpty())
+					if (UGameSettingCollection* Collection = GetOrCreateSettingCollection(DesiredDisplayCategory))
 					{
 						// Create the settings widget and initialize it, adding it to this config's section
-						ULyraSettingKeyboardInput* InputBinding = ExistingSetting ? ExistingSetting : NewObject<ULyraSettingKeyboardInput>();
-						
-						InputBinding->SetInputData(MappingSynthesized, InputConfigPair.Config, !ExistingSetting ? 0 : 1);
+						ULyraSettingKeyboardInput* InputBinding = NewObject<ULyraSettingKeyboardInput>();
+
+						InputBinding->InitializeInputData(Profile, RowPair.Value, Options);
 						InputBinding->AddEditCondition(WhenPlatformSupportsMouseAndKeyboard);
-						
-						if (!ExistingSetting)
-						{
-							ConfigSettingCollection->AddSetting(InputBinding);	
-						}
-						
-						AddedSettings.Add(MappingSynthesized.PlayerMappableOptions.Name);
+
+						Collection->AddSetting(InputBinding);
+						CreatedMappingNames.Add(RowPair.Key);
 					}
 					else
 					{
-						UE_LOG(LogLyraGameSettingRegistry, Warning, TEXT("A setting with the name '%s' from config '%s' could not be added, one of its names is empty!"), *Mapping.PlayerMappableOptions.Name.ToString(), *InputConfigPair.Config->GetConfigName().ToString());
 						ensure(false);
 					}
 				}

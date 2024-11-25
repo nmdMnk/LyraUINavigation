@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "CommonUserWidget.h"
 #include "LyraSimulatedInputWidget.generated.h"
 
@@ -32,39 +31,40 @@ public:
 
 	//~ Begin UUserWidget
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual FReply NativeOnTouchEnded(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent) override;
 	//~ End UUserWidget interface
 	
 	/** Get the enhanced input subsystem based on the owning local player of this widget. Will return null if there is no owning player */
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	UEnhancedInputLocalPlayerSubsystem* GetEnhancedInputSubsystem() const;
 
 	/** Get the current player input from the current input subsystem */
 	UEnhancedPlayerInput* GetPlayerInput() const;
 
 	/**  */
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	const UInputAction* GetAssociatedAction() const { return AssociatedAction; }
 
 	/** Returns the current key that will be used to input any values. */
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	FKey GetSimulatedKey() const { return KeyToSimulate; }
 
 	/**
 	 * Injects the given vector as an input to the current simulated key.
 	 * This calls "InputKey" on the current player.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	void InputKeyValue(const FVector& Value);
 
 	/**
 	 * Injects the given vector as an input to the current simulated key.
 	 * This calls "InputKey" on the current player.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	void InputKeyValue2D(const FVector2D& Value);
 
-	UFUNCTION(BlueprintCallable, Category = "Lyra Simulated Input Widget")
+	UFUNCTION(BlueprintCallable)
 	void FlushSimulatedInput();
 	
 protected:
@@ -72,16 +72,20 @@ protected:
 	/** Set the KeyToSimulate based on a query from enhanced input about what keys are mapped to the associated action */
 	void QueryKeyToSimulate();
 
-	/** The common visiblity border will allow you to specifiy UI for only specific platorms if desired */
-	UPROPERTY(BlueprintReadWrite, Category = "Lyra Simulated Input Widget", meta = (BindWidget))
+	/** Called whenever control mappings change, so we have a chance to adapt our own keys */
+	UFUNCTION()
+	void OnControlMappingsRebuilt();
+
+	/** The common visibility border will allow you to specify UI for only specific platforms if desired */
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UCommonHardwareVisibilityBorder> CommonVisibilityBorder = nullptr;
 	
 	/** The associated input action that we should simulate input for */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lyra Simulated Input Widget")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<const UInputAction> AssociatedAction = nullptr;
 
 	/** The Key to simulate input for in the case where none are currently bound to the associated action */
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Lyra Simulated Input Widget")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	FKey FallbackBindingKey = EKeys::Gamepad_Right2D;
 
 	/** The key that should be input via InputKey on the player input */

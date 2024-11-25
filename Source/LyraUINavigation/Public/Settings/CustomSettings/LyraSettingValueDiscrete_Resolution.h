@@ -2,23 +2,17 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 #include "GameSettingValueDiscrete.h"
-#include "GenericPlatform/GenericWindow.h"
-#include "Internationalization/Text.h"
-#include "Math/IntPoint.h"
-#include "Math/UnrealMathSSE.h"
-#include "Misc/Optional.h"
-#include "Templates/SharedPointer.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingValueDiscrete_Resolution.generated.h"
+
+namespace EWindowMode { enum Type : int; }
 
 class UObject;
 struct FScreenResolutionRHI;
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingValueDiscrete_Resolution : public UGameSettingValueDiscrete
+class ULyraSettingValueDiscrete_Resolution : public UGameSettingValueDiscrete
 {
 	GENERATED_BODY()
 	

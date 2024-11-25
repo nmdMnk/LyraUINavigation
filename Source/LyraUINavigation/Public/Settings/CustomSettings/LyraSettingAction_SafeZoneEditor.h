@@ -2,10 +2,8 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 #include "GameSettingAction.h"
 #include "GameSettingValueScalarDynamic.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingAction_SafeZoneEditor.generated.h"
 
@@ -14,7 +12,7 @@ class UObject;
 
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingValueScalarDynamic_SafeZoneValue : public UGameSettingValueScalarDynamic
+class ULyraSettingValueScalarDynamic_SafeZoneValue : public UGameSettingValueScalarDynamic
 {
 	GENERATED_BODY()
 
@@ -24,7 +22,7 @@ public:
 };
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingAction_SafeZoneEditor : public UGameSettingAction
+class ULyraSettingAction_SafeZoneEditor : public UGameSettingAction
 {
 	GENERATED_BODY()
 	

@@ -3,10 +3,7 @@
 #include "UI/LyraGameViewportClient.h"
 
 #include "CommonUISettings.h"
-#include "GameplayTagContainer.h"
 #include "ICommonUIModule.h"
-#include "NativeGameplayTags.h"
-#include "UObject/NameTypes.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraGameViewportClient)
 
@@ -25,7 +22,7 @@ ULyraGameViewportClient::ULyraGameViewportClient()
 void ULyraGameViewportClient::Init(struct FWorldContext& WorldContext, UGameInstance* OwningGameInstance, bool bCreateNewAudioDevice)
 {
 	Super::Init(WorldContext, OwningGameInstance, bCreateNewAudioDevice);
-	
+
 	// We have software cursors set up in our project settings for console/mobile use, but on desktop we're fine with
 	// the standard hardware cursors
 	const bool UseHardwareCursor = ICommonUIModule::GetSettings().GetPlatformTraits().HasTag(GameViewportTags::TAG_Platform_Trait_Input_HardwareCursor);

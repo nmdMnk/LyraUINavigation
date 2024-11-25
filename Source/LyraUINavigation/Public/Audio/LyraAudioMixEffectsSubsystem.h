@@ -2,10 +2,7 @@
 
 #pragma once
 
-#include "Containers/Array.h"
-#include "Engine/EngineTypes.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraAudioMixEffectsSubsystem.generated.h"
 
@@ -39,11 +36,16 @@ struct FLyraAudioSubmixEffectsChain
  * Lyra Audio Settings.
  */
 UCLASS()
-class ULyraAudioMixEffectsSubsystem : public UWorldSubsystem
+class LYRAUINAVIGATION_API ULyraAudioMixEffectsSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
+	// USubsystem implementation Begin
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+	// USubsystem implementation End
+
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 
 	/** Called once all UWorldSubsystems have been initialized */

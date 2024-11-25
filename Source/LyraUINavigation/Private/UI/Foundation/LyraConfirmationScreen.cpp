@@ -3,6 +3,7 @@
 #include "UI/Foundation/LyraConfirmationScreen.h"
 
 #if WITH_EDITOR
+#include "CommonInputSettings.h"
 #include "Editor/WidgetCompilerLog.h"
 #endif
 
@@ -11,8 +12,6 @@
 #include "CommonTextBlock.h"
 #include "Components/DynamicEntryBox.h"
 #include "ICommonInputModule.h"
-#include "Input/Reply.h"
-#include "CommonButtonBase.h"
 #include "UI/Foundation/LyraButtonBase.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraConfirmationScreen)
@@ -25,28 +24,28 @@ void ULyraConfirmationScreen::SetupDialog(UCommonGameDialogDescriptor* Descripto
 	RichText_Description->SetText(Descriptor->Body);
 
 	EntryBox_Buttons->Reset<ULyraButtonBase>([](ULyraButtonBase& Button)
-	{
-		Button.OnClicked().Clear();
-	});
+		{
+			Button.OnClicked().Clear();
+		});
 
 	for (const FConfirmationDialogAction& Action : Descriptor->ButtonActions)
 	{
 		FDataTableRowHandle ActionRow;
 
-		switch(Action.Result)
+		switch (Action.Result)
 		{
-			case ECommonMessagingResult::Confirmed:
-				ActionRow = ICommonInputModule::GetSettings().GetDefaultClickAction();
-				break;
-			case ECommonMessagingResult::Declined:
-				ActionRow = ICommonInputModule::GetSettings().GetDefaultBackAction();
-				break;
-			case ECommonMessagingResult::Cancelled:
-				ActionRow = CancelAction;
-				break;
-			default:
-				ensure(false);
-				continue;
+		case ECommonMessagingResult::Confirmed:
+			ActionRow = ICommonInputModule::GetSettings().GetDefaultClickAction();
+			break;
+		case ECommonMessagingResult::Declined:
+			ActionRow = ICommonInputModule::GetSettings().GetDefaultBackAction();
+			break;
+		case ECommonMessagingResult::Cancelled:
+			ActionRow = CancelAction;
+			break;
+		default:
+			ensure(false);
+			continue;
 		}
 
 		ULyraButtonBase* Button = EntryBox_Buttons->CreateEntry<ULyraButtonBase>();

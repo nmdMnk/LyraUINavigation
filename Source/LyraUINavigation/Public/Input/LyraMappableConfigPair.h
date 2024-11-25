@@ -2,17 +2,19 @@
 
 #pragma once
 
-#include "CommonInputBaseTypes.h"
+#include "CommonInputTypeEnum.h"
 #include "GameplayTagContainer.h"
 #include "UObject/SoftObjectPtr.h"
 
 #include "LyraMappableConfigPair.generated.h"
 
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+
 class UPlayerMappableInputConfig;
 
 /** A container to organize loaded player mappable configs to their CommonUI input type */
 USTRUCT(BlueprintType)
-struct LYRAUINAVIGATION_API FLoadedMappableConfigPair
+struct UE_DEPRECATED(5.3, "FLoadedMappableConfigPair has been deprecated. Please use FInputMappingContextAndPriority instead.") FLoadedMappableConfigPair
 {
 	GENERATED_BODY()
 
@@ -24,27 +26,27 @@ struct LYRAUINAVIGATION_API FLoadedMappableConfigPair
 	{}
 
 	/** The player mappable input config that should be applied to the Enhanced Input subsystem */
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<const UPlayerMappableInputConfig> Config = nullptr;
 
 	/** The type of device that this mapping config should be applied to */
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	ECommonInputType Type = ECommonInputType::Count;
 
 	/** If this config is currently active. A config is marked as active when it's owning GFA is active */
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	bool bIsActive = false;
 };
 
 /** A container to organize potentially unloaded player mappable configs to their CommonUI input type */
 USTRUCT()
-struct LYRAUINAVIGATION_API FMappableConfigPair
+struct UE_DEPRECATED(5.3, "FMappableConfigPair has been deprecated. Please use FInputMappingContextAndPriority instead.") FMappableConfigPair
 {
 	GENERATED_BODY()
 	
 	FMappableConfigPair() = default;
 	
-	UPROPERTY(EditAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(EditAnywhere)
 	TSoftObjectPtr<UPlayerMappableInputConfig> Config;
 
 	/**
@@ -52,7 +54,7 @@ struct LYRAUINAVIGATION_API FMappableConfigPair
 	 * for things like the settings screen, or if you only want to apply this config when a certain
 	 * input type is being used.
 	 */
-	UPROPERTY(EditAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(EditAnywhere)
 	ECommonInputType Type = ECommonInputType::Count;
 
 	/**
@@ -61,19 +63,19 @@ struct LYRAUINAVIGATION_API FMappableConfigPair
 	 * If the platform does not have one of the traits specified it can still be registered, but cannot
 	 * be activated. 
 	 */
-	UPROPERTY(EditAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(EditAnywhere)
 	FGameplayTagContainer DependentPlatformTraits;
 
 	/**
 	 * If the current platform has any of these traits, then this config will not be actived.
 	 */
-	UPROPERTY(EditAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(EditAnywhere)
 	FGameplayTagContainer ExcludedPlatformTraits;
 
 	/** If true, then this input config will be activated when it's associated Game Feature is activated.
 	 * This is normally the desirable behavior
 	 */
-	UPROPERTY(EditAnywhere, Category = "Lyra Mappable Config Pair")
+	UPROPERTY(EditAnywhere)
 	bool bShouldActivateAutomatically = true;
 
 	/** Returns true if this config pair can be activated based on the current platform traits and settings. */
@@ -89,3 +91,5 @@ struct LYRAUINAVIGATION_API FMappableConfigPair
 	 */
 	static void UnregisterPair(const FMappableConfigPair& Pair);
 };
+
+PRAGMA_ENABLE_DEPRECATION_WARNINGS

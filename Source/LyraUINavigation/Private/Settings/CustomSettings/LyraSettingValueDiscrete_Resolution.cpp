@@ -2,15 +2,9 @@
 
 #include "Settings/CustomSettings/LyraSettingValueDiscrete_Resolution.h"
 
-#include "Engine/Engine.h"
 #include "Framework/Application/SlateApplication.h"
 #include "GameFramework/GameUserSettings.h"
-#include "GameSettingFilterState.h"
-#include "GenericPlatform/GenericApplication.h"
-#include "HAL/PlatformMisc.h"
-#include "Internationalization/Internationalization.h"
 #include "RHI.h"
-#include "Templates/Casts.h"
 #include "UnrealEngine.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingValueDiscrete_Resolution)
@@ -134,7 +128,7 @@ void ULyraSettingValueDiscrete_Resolution::InitializeResolutions()
 	{
 		FScreenResolutionRHI* RHIInitialResolution = ResArray.FindByPredicate([InitialDisplayMetrics](const FScreenResolutionRHI& ScreenRes) {
 			return ScreenRes.Width == InitialDisplayMetrics.PrimaryDisplayWidth && ScreenRes.Height == InitialDisplayMetrics.PrimaryDisplayHeight;
-		});
+			});
 
 		TSharedRef<FScreenResolutionEntry> Entry = MakeShared<FScreenResolutionEntry>();
 		if (RHIInitialResolution)
@@ -304,7 +298,7 @@ int32 ULyraSettingValueDiscrete_Resolution::FindIndexOfDisplayResolutionForceVal
 }
 
 int32 ULyraSettingValueDiscrete_Resolution::FindClosestResolutionIndex(const FIntPoint& Resolution) const
-{	
+{
 	int32 Index = 0;
 	int32 LastDiff = Resolution.SizeSquared();
 
@@ -313,7 +307,7 @@ int32 ULyraSettingValueDiscrete_Resolution::FindClosestResolutionIndex(const FIn
 		// We compare the squared diagonals
 		int32 Diff = FMath::Abs(Resolution.SizeSquared() - Resolutions[i]->GetResolution().SizeSquared());
 		if (Diff <= LastDiff)
-		{				
+		{
 			Index = i;
 		}
 		LastDiff = Diff;
@@ -333,7 +327,7 @@ void ULyraSettingValueDiscrete_Resolution::GetStandardWindowResolutions(const FI
 		{
 			new(StandardResolutions) FIntPoint(1024, 768); // XGA
 
-														   // WXGA (3 versions)
+			// WXGA (3 versions)
 			new(StandardResolutions) FIntPoint(1366, 768); // FWXGA
 			new(StandardResolutions) FIntPoint(1360, 768);
 			new(StandardResolutions) FIntPoint(1280, 800);

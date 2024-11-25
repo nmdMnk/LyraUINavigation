@@ -2,14 +2,8 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 #include "EnhancedInputComponent.h"
-#include "GameplayTagContainer.h"
-#include "HAL/Platform.h"
-#include "InputTriggers.h"
 #include "LyraInputConfig.h"
-#include "Misc/AssertionMacros.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraInputComponent.generated.h"
 
@@ -24,7 +18,7 @@ class UObject;
  *	Component used to manage input mappings and bindings using an input config data asset.
  */
 UCLASS(Config = Input)
-class LYRAUINAVIGATION_API ULyraInputComponent : public UEnhancedInputComponent
+class ULyraInputComponent : public UEnhancedInputComponent
 {
 	GENERATED_BODY()
 

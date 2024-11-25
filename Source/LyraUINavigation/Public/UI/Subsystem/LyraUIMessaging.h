@@ -5,7 +5,6 @@
 #include "Messaging/CommonMessagingSubsystem.h"
 #include "Templates/SubclassOf.h"
 #include "UObject/SoftObjectPtr.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraUIMessaging.generated.h"
 
@@ -18,7 +17,7 @@ class UObject;
  * 
  */
 UCLASS()
-class LYRAUINAVIGATION_API ULyraUIMessaging : public UCommonMessagingSubsystem
+class ULyraUIMessaging : public UCommonMessagingSubsystem
 {
 	GENERATED_BODY()
 

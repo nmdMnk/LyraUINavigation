@@ -3,16 +3,10 @@
 #include "UI/Subsystem/LyraUIManagerSubsystem.h"
 
 #include "CommonLocalPlayer.h"
-#include "Components/SlateWrapperTypes.h"
-#include "Containers/Array.h"
-#include "Delegates/Delegate.h"
 #include "Engine/GameInstance.h"
-#include "Engine/LocalPlayer.h"
 #include "GameFramework/HUD.h"
-#include "GameFramework/PlayerController.h"
 #include "GameUIPolicy.h"
 #include "PrimaryGameLayout.h"
-#include "Templates/Casts.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraUIManagerSubsystem)
 
@@ -39,7 +33,7 @@ void ULyraUIManagerSubsystem::Deinitialize()
 bool ULyraUIManagerSubsystem::Tick(float DeltaTime)
 {
 	SyncRootLayoutVisibilityToShowHUD();
-	
+
 	return true;
 }
 
@@ -50,7 +44,7 @@ void ULyraUIManagerSubsystem::SyncRootLayoutVisibilityToShowHUD()
 		for (const ULocalPlayer* LocalPlayer : GetGameInstance()->GetLocalPlayers())
 		{
 			bool bShouldShowUI = true;
-			
+
 			if (const APlayerController* PC = LocalPlayer->GetPlayerController(GetWorld()))
 			{
 				const AHUD* HUD = PC->GetHUD();
@@ -66,7 +60,7 @@ void ULyraUIManagerSubsystem::SyncRootLayoutVisibilityToShowHUD()
 				const ESlateVisibility DesiredVisibility = bShouldShowUI ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed;
 				if (DesiredVisibility != RootLayout->GetVisibility())
 				{
-					RootLayout->SetVisibility(DesiredVisibility);	
+					RootLayout->SetVisibility(DesiredVisibility);
 				}
 			}
 		}

@@ -2,21 +2,17 @@
 
 #pragma once
 
-#include "Containers/Array.h"
 //#include "Settings/LyraMobilePerformance.h"
-#include "Containers/SortedMap.h"
-#include "GameSettingFilterState.h"
 #include "GameSettingValueDiscrete.h"
-#include "HAL/Platform.h"
-#include "Internationalization/Text.h"
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraSettingValueDiscrete_MobileFPSType.generated.h"
+
+enum class EGameSettingChangeReason : uint8;
 
 class UObject;
 
 UCLASS()
-class LYRAUINAVIGATION_API ULyraSettingValueDiscrete_MobileFPSType : public UGameSettingValueDiscrete
+class ULyraSettingValueDiscrete_MobileFPSType : public UGameSettingValueDiscrete
 {
 	GENERATED_BODY()
 	

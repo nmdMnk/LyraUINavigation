@@ -4,10 +4,7 @@
 
 #include "DataSource/GameSettingDataSourceDynamic.h" // IWYU pragma: keep
 #include "GameSettingRegistry.h"
-#include "Logging/LogMacros.h"
-#include "Misc/AssertionMacros.h"
 #include "Settings/LyraSettingsLocal.h" // IWYU pragma: keep
-#include "UObject/UObjectGlobals.h"
 
 #include "LyraGameSettingRegistry.generated.h"
 
@@ -39,7 +36,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogLyraGameSettingRegistry, Log, Log);
  * 
  */
 UCLASS()
-class LYRAUINAVIGATION_API ULyraGameSettingRegistry : public UGameSettingRegistry
+class ULyraGameSettingRegistry : public UGameSettingRegistry
 {
 	GENERATED_BODY()
 
