@@ -26,3 +26,10 @@ After adding this plugin to your project and enabling it, be sure to:
   - [LyraAudioSettings] -> Voice Chat Volume Control Bus -> CB_VoiceChat
   - [Common Loading Screen] -> W_LoadingScreen_Host
 - Use the plugin's BP_LUIN_PlayerController or have your Player Controller class inherit from CommonPlayerController
+
+- Edit DefaultGame.ini and add the following line
+  ```
+  [/Script/LyraUINavigation.LyraUIMessaging]
+  ConfirmationDialogClass=/LyraUINavigation/UI/Foundation/Dialogs/W_ConfirmationDefault.W_ConfirmationDefault_C
+  ErrorDialogClass=/LyraUINavigation/UI/Foundation/Dialogs/W_ConfirmationError.W_ConfirmationError_C
+  ```
