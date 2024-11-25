@@ -922,8 +922,10 @@ void ULyraSettingsLocal::SetOverallVolume(float InVolume)
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if(!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Locate the locally cached bus and set the volume on it
 	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Overall")))
@@ -952,8 +954,10 @@ void ULyraSettingsLocal::SetMusicVolume(float InVolume)
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if (!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Locate the locally cached bus and set the volume on it
 	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Music")))
@@ -982,8 +986,10 @@ void ULyraSettingsLocal::SetSoundFXVolume(float InVolume)
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if (!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Locate the locally cached bus and set the volume on it
 	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("SoundFX")))
@@ -1012,8 +1018,10 @@ void ULyraSettingsLocal::SetDialogueVolume(float InVolume)
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if (!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Locate the locally cached bus and set the volume on it
 	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("Dialogue")))
@@ -1042,8 +1050,10 @@ void ULyraSettingsLocal::SetVoiceChatVolume(float InVolume)
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if (!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Locate the locally cached bus and set the volume on it
 	if (TObjectPtr<USoundControlBus>* ControlBusDblPtr = ControlBusMap.Find(TEXT("VoiceChat")))
@@ -1064,8 +1074,10 @@ void ULyraSettingsLocal::SetVolumeForControlBus(USoundControlBus* InSoundControl
 		LoadUserControlBusMix();
 	}
 
-	// Ensure it's been loaded before continuing
-	ensureMsgf(bSoundControlBusMixLoaded, TEXT("UserControlBusMix Settings Failed to Load."));
+	if (!bSoundControlBusMixLoaded)
+	{
+		UE_LOG(LogConsoleResponse, Error, TEXT("UserControlBusMix Settings Failed to Load."));
+	}
 
 	// Assuming everything has been loaded correctly, we retrieve the world and use AudioModulationStatics to update the Control Bus Volume values and
 	// apply the settings to the cached User Control Bus Mix

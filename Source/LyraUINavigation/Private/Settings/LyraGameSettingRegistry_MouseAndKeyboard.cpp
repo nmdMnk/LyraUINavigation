@@ -177,6 +177,12 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeMouseAndKeyboardSett
 		static TSet<FName> CreatedMappingNames;
 		CreatedMappingNames.Reset();
 
+		if (!UserSettings)
+		{
+			UE_LOG(LogLyraGameSettingRegistry, Warning, TEXT("No valid UserSettings, skip Enhanced Player Mappable Key profiles..."));
+			return Screen;
+		}
+
 		for (const TPair<FGameplayTag, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair : UserSettings->GetAllSavedKeyProfiles())
 		{
 			const FGameplayTag& ProfileName = ProfilePair.Key;
