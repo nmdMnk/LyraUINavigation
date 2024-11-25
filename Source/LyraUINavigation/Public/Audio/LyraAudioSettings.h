@@ -38,6 +38,10 @@ public:
 	UPROPERTY(config, EditAnywhere, Category = MixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))
 	FSoftObjectPath DefaultControlBusMix;
 
+	/** The Loading Screen Control Bus Mix - Called during loading screens to cover background audio events */
+	UPROPERTY(config, EditAnywhere, Category = MixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))
+	FSoftObjectPath LoadingScreenControlBusMix;
+
 	/** The Default Base Control Bus Mix */
 	UPROPERTY(config, EditAnywhere, Category = UserMixSettings, meta = (AllowedClasses = "/Script/AudioModulation.SoundControlBusMix"))
 	FSoftObjectPath UserSettingsControlBusMix;

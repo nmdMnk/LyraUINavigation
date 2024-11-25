@@ -18,7 +18,8 @@ public class LyraUINavigation : ModuleRules
 			"EnhancedInput",
             "UMG",
             "CommonUI",
-            "GameplayTags"
+            "GameplayTags",
+            "CommonLoadingScreen"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]

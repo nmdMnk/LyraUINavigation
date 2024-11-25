@@ -58,12 +58,19 @@ public:
 	void ApplyDynamicRangeEffectsChains(bool bHDRAudio);
 	
 protected:
+	void OnLoadingScreenStatusChanged(bool bShowingLoadingScreen);
+	void ApplyOrRemoveLoadingScreenMix(bool bWantsLoadingScreenMix);
+	
 	// Called when determining whether to create this Subsystem
 	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
 
 	// Default Sound Control Bus Mix retrieved from the Lyra Audio Settings
 	UPROPERTY(Transient)
 	TObjectPtr<USoundControlBusMix> DefaultBaseMix = nullptr;
+
+	// Loading Screen Sound Control Bus Mix retrieved from the Lyra Audio Settings
+	UPROPERTY(Transient)
+	TObjectPtr<USoundControlBusMix> LoadingScreenMix = nullptr;
 
 	// User Sound Control Bus Mix retrieved from the Lyra Audio Settings
 	UPROPERTY(Transient)
@@ -96,4 +103,6 @@ protected:
 	// Submix Effect hain Overrides to apply when HDR Audio is turned off
 	UPROPERTY(Transient)
 	TArray<FLyraAudioSubmixEffectsChain> LDRSubmixEffectChain;
+
+	bool bAppliedLoadingScreenMix = false;
 };

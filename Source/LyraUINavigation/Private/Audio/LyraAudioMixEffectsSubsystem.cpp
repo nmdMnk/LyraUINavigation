@@ -7,6 +7,7 @@
 #include "AudioModulationStatics.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
+#include "LoadingScreenManager.h"
 #include "Audio/LyraAudioSettings.h"
 #include "Settings/LyraSettingsLocal.h"
 #include "Sound/SoundEffectSubmix.h"
@@ -24,6 +25,12 @@ void ULyraAudioMixEffectsSubsystem::Initialize(FSubsystemCollectionBase& Collect
 
 void ULyraAudioMixEffectsSubsystem::Deinitialize()
 {
+	if (ULoadingScreenManager* LoadingScreenManager = UGameInstance::GetSubsystem<ULoadingScreenManager>(GetWorld()->GetGameInstance()))
+	{
+		LoadingScreenManager->OnLoadingScreenVisibilityChangedDelegate().RemoveAll(this);
+		ApplyOrRemoveLoadingScreenMix(false);
+	}
+
 	Super::Deinitialize();
 }
 
@@ -55,6 +62,18 @@ void ULyraAudioMixEffectsSubsystem::PostInitialize()
 			else
 			{
 				ensureMsgf(SoundControlBusMix, TEXT("Default Control Bus Mix reference missing from Lyra Audio Settings."));
+			}
+		}
+
+		if (UObject* ObjPath = LyraAudioSettings->LoadingScreenControlBusMix.TryLoad())
+		{
+			if (USoundControlBusMix* SoundControlBusMix = Cast<USoundControlBusMix>(ObjPath))
+			{
+				LoadingScreenMix = SoundControlBusMix;
+			}
+			else
+			{
+				ensureMsgf(SoundControlBusMix, TEXT("Loading Screen Control Bus Mix reference missing from Lyra Audio Settings."));
 			}
 		}
 
@@ -190,6 +209,13 @@ void ULyraAudioMixEffectsSubsystem::PostInitialize()
 			LDRSubmixEffectChain.Add(NewEffectChain);
 		}
 	}
+
+	// Register with the loading screen manager
+	if (ULoadingScreenManager* LoadingScreenManager = UGameInstance::GetSubsystem<ULoadingScreenManager>(GetWorld()->GetGameInstance()))
+	{
+		LoadingScreenManager->OnLoadingScreenVisibilityChangedDelegate().AddUObject(this, &ThisClass::OnLoadingScreenStatusChanged);
+		ApplyOrRemoveLoadingScreenMix(LoadingScreenManager->GetLoadingScreenDisplayStatus());
+	}
 }
 
 void ULyraAudioMixEffectsSubsystem::OnWorldBeginPlay(UWorld& InWorld)
@@ -291,6 +317,31 @@ void ULyraAudioMixEffectsSubsystem::ApplyDynamicRangeEffectsChains(bool bHDRAudi
 	for (USoundSubmix* Submix : SubmixesLeftToClear)
 	{
 		UAudioMixerBlueprintLibrary::ClearSubmixEffectChainOverride(GetWorld(), Submix, 0.1f);
+	}
+}
+
+void ULyraAudioMixEffectsSubsystem::OnLoadingScreenStatusChanged(bool bShowingLoadingScreen)
+{
+	ApplyOrRemoveLoadingScreenMix(bShowingLoadingScreen);
+}
+
+void ULyraAudioMixEffectsSubsystem::ApplyOrRemoveLoadingScreenMix(bool bWantsLoadingScreenMix)
+{
+	UWorld* World = GetWorld();
+
+	if (bAppliedLoadingScreenMix != bWantsLoadingScreenMix && LoadingScreenMix && World)
+	{
+		if (bWantsLoadingScreenMix)
+		{
+			// Apply the mix
+			UAudioModulationStatics::ActivateBusMix(World, LoadingScreenMix);
+		}
+		else
+		{
+			// Remove the mix
+			UAudioModulationStatics::DeactivateBusMix(World, LoadingScreenMix);
+		}
+		bAppliedLoadingScreenMix = bWantsLoadingScreenMix;
 	}
 }
 
