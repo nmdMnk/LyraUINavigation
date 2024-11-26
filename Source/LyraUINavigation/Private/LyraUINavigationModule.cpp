@@ -3,12 +3,18 @@
 #include "LyraUINavigationModule.h"
 
 #include "Modules/ModuleManager.h"
+#include "GameplayTagsManager.h"
+#include "Interfaces/IPluginManager.h"
 
 #define LOCTEXT_NAMESPACE "FLyraUINavigationModule"
 
 void FLyraUINavigationModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	TSharedPtr<IPlugin> ThisPlugin = IPluginManager::Get().FindPlugin(TEXT("LyraUINavigation"));
+	check(ThisPlugin.IsValid());
+
+	// CommonUISettings is loading PlatformTraits from the configuration before these tags are added. As a temporary workaround, all Platform.Trait tags are also defined as GAMEPLAY_TAG_STATIC.
+	UGameplayTagsManager::Get().AddTagIniSearchPath(ThisPlugin->GetBaseDir() / TEXT("Config") / TEXT("Tags"));
 }
 
 void FLyraUINavigationModule::ShutdownModule()

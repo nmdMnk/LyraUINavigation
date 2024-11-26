@@ -28,6 +28,8 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraSettingsLocal)
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Platform_Trait_BinauralSettingControlledByOS, "Platform.Trait.BinauralSettingControlledByOS");
+UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Platform_Trait_CanExitApplication, "Platform.Trait.CanExitApplication");
+
 
 //////////////////////////////////////////////////////////////////////
 

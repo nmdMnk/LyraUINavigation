@@ -13,10 +13,13 @@
 #include "Settings/LyraSettingsShared.h"
 #include "Player/LyraLocalPlayer.h"
 #include "PlayerMappableInputConfig.h"
+#include "NativeGameplayTags.h"
 
 class ULocalPlayer;
 
 #define LOCTEXT_NAMESPACE "Lyra"
+
+UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Platform_Trait_Input_SupportsMouseAndKeyboard, "Platform.Trait.Input.SupportsMouseAndKeyboard");
 
 UGameSettingCollection* ULyraGameSettingRegistry::InitializeMouseAndKeyboardSettings(ULyraLocalPlayer* InLocalPlayer)
 {

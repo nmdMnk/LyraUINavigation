@@ -19,7 +19,9 @@ public class LyraUINavigation : ModuleRules
             "UMG",
             "CommonUI",
             "GameplayTags",
-            "CommonLoadingScreen"
+            "CommonLoadingScreen",
+            "GameplayTags",
+            "Projects"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[]
