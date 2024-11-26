@@ -16,15 +16,17 @@ After adding this plugin to your project and enabling it, be sure to:
   - [Engine / General Settings] -> Local Player Class = LyraLocalPlayer
   - [Engine / General Settings] -> Game User Settings Class = LyraSettingsLocal
   - [Plugins / Lyra UI Navigation] -> Default UI Policy Class = B_LyraUIPolicy
-  - [LyraAudioSettings] -> Default Control Bus Mix -> CBM_BaseMix
-  - [LyraAudioSettings] -> Loading Screen Control Bus Mix -> CBM_LoadingScreenMix
-  - [LyraAudioSettings] -> User Settings Control Bus Mix -> CBM_UserMix
-  - [LyraAudioSettings] -> Overall Volume Control Bus -> CB_Main
-  - [LyraAudioSettings] -> Music Volume Control Bus -> CB_Music
-  - [LyraAudioSettings] -> Sound FXVolume Control Bus -> CB_SFX
-  - [LyraAudioSettings] -> Dialogue Volume Control Bus -> CB_Dialogue
-  - [LyraAudioSettings] -> Voice Chat Volume Control Bus -> CB_VoiceChat
-  - [Common Loading Screen] -> W_LoadingScreen_Host
+  - [Game /LyraAudioSettings] -> Default Control Bus Mix -> CBM_BaseMix
+  - [Game /LyraAudioSettings] -> Loading Screen Control Bus Mix -> CBM_LoadingScreenMix
+  - [Game /LyraAudioSettings] -> User Settings Control Bus Mix -> CBM_UserMix
+  - [Game /LyraAudioSettings] -> Overall Volume Control Bus -> CB_Main
+  - [Game /LyraAudioSettings] -> Music Volume Control Bus -> CB_Music
+  - [Game /LyraAudioSettings] -> Sound FXVolume Control Bus -> CB_SFX
+  - [Game /LyraAudioSettings] -> Dialogue Volume Control Bus -> CB_Dialogue
+  - [Game /LyraAudioSettings] -> Voice Chat Volume Control Bus -> CB_VoiceChat
+  - [Game /Common Loading Screen] -> W_LoadingScreen_Host
+  - [Plugins / Common UI Input Settings] -> Input Actions -> UI.Action.Escape -> Your selected escape keys
+
 - Use the plugin's BP_LUIN_PlayerController or have your Player Controller class inherit from CommonPlayerController
 
 - Edit DefaultGame.ini and add the following line
