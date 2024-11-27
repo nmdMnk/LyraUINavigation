@@ -38,7 +38,8 @@ After adding this plugin to your project and enabling it, be sure to:
 - Use the plugin's BP_LUIN_PlayerController or have your Player Controller class inherit from CommonPlayerController
 
 Otherwise, you can configure these settings by editing .ini files.
-  Alter **DefaultEngine.ini** with the following settings:
+
+Alter **DefaultEngine.ini** with the following settings:
   - **[/Script/EngineSettings.GameMapsSettings]**
   ```
   GameInstanceClass=/Script/LyraUINavigation.LyraUINavGameInstance
@@ -108,8 +109,8 @@ Otherwise, you can configure these settings by editing .ini files.
   ```
 
 
-If you experience the issue described above, where the "Default UI Policy Class" resets to "None" after being set in the editor's project settings and restarting the project, resolve it by updating the **DefaultGame.ini** file as explained above.
-Alternatively, you can fix the issue by editing **CommonGame/Source/Public/GameUIManagerSubsystem.h** and replacing:
+If you experience the issue where the "Default UI Policy Class" resets to "None" after being set in the editor's project settings and restarting the project, resolve it by updating the **DefaultGame.ini** file as explained above in the **Lyra UI Navigation** section.
+Alternatively, you can fix the editor's issue by editing **Plugins/CommonGame/Source/Public/GameUIManagerSubsystem.h** and replacing:
   ```
   UCLASS(Abstract, config = Game)
   ```
