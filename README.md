@@ -34,52 +34,53 @@ After adding this plugin to your project and enabling it, be sure to:
   - [Plugins / Common UI Framework] -> Default Throbber Material -> M_UI_Throbber_Base
   - [Plugins / Common UI Framework] -> Default Rich Text Data Class -> CommonUIRichTextData
 
+- Test the FrontEnd Menu with L_LyraFrontEnd level
 - Use the plugin's BP_LUIN_PlayerController or have your Player Controller class inherit from CommonPlayerController
 
-Otherwise, you can configure these settings by editing the .ini files.
-- Alter **DefaultEngine.ini** with the following settings
-  **[/Script/EngineSettings.GameMapsSettings]**
+Otherwise, you can configure these settings by editing .ini files.
+  Alter **DefaultEngine.ini** with the following settings:
+  - **[/Script/EngineSettings.GameMapsSettings]**
   ```
   GameInstanceClass=/Script/LyraUINavigation.LyraUINavGameInstance
   ```
-  **[/Script/Engine.Engine]**
+  - **[/Script/Engine.Engine]**
   ```
   GameViewportClientClassName=/Script/LyraUINavigation.LyraGameViewportClient
   LocalPlayerClassName=/Script/LyraUINavigation.LyraLocalPlayer
   GameUserSettingsClassName=/Script/LyraUINavigation.LyraSettingsLocal
   ```
 
-- Alter **DefaultEngine.ini** and add the following lines
-  **Common UI Editor**
+  Alter **DefaultEngine.ini** and add the following lines:
+  - **Common UI Editor**
   ```
   [/Script/CommonUI.CommonUIEditorSettings]
   TemplateTextStyle=/LyraUINavigation/UI/Foundation/Text/TextStyle-Regular.TextStyle-Regular_C
   TemplateButtonStyle=/LyraUINavigation/UI/Foundation/Buttons/ButtonStyle-Primary-M.ButtonStyle-Primary-M_C
   ```
 
-- Alter **DefaultGame.ini** and add the following lines
-  **Common Input Settings**
+  Alter **DefaultGame.ini** and add the following lines:
+  - **Common Input Settings**
   ```
   [/Script/CommonInput.CommonInputSettings]
   InputData=/LyraUINavigation/UI/B_CommonInputData.B_CommonInputData_C
   ```
-  **Lyra UI Navigation**
+  - **Lyra UI Navigation**
   ```
   [/Script/LyraUINavigation.LyraUIManagerSubsystem]
   DefaultUIPolicyClass=/LyraUINavigation/UI/B_LyraUIPolicy.B_LyraUIPolicy_C
   ```
-  **LyraUIMessagingSettings**
+  - **LyraUIMessagingSettings**
   ```
   [/Script/LyraUINavigation.LyraUIMessagingSettings]
   ConfirmationDialogClass=/LyraUINavigation/UI/Foundation/Dialogs/W_ConfirmationDefault.W_ConfirmationDefault_C
   ErrorDialogClass=/LyraUINavigation/UI/Foundation/Dialogs/W_ConfirmationError.W_ConfirmationError_C
   ```
-  **Common Loading Screen**
+  - **Common Loading Screen**
   ```
   [/Script/CommonLoadingScreen.CommonLoadingScreenSettings]
   LoadingScreenWidget=/LyraUINavigation/UI/Foundation/LoadingScreen/W_LoadingScreen_Host.W_LoadingScreen_Host_C
   ```
-  **LyraAudioSettings**
+  - **LyraAudioSettings**
   ```
   [/Script/LyraUINavigation.LyraAudioSettings]
   DefaultControlBusMix=/LyraUINavigation/Audio/Modulation/ControlBusMixes/CBM_BaseMix.CBM_BaseMix
@@ -93,21 +94,22 @@ Otherwise, you can configure these settings by editing the .ini files.
   +HDRAudioSubmixEffectChain=(Submix="/LyraUINavigation/Audio/Submixes/MainSubmix.MainSubmix",SubmixEffectChain=("/LyraUINavigation/Audio/Effects/SubmixEffects/DYN_MainDynamics.DYN_MainDynamics"))
   +LDRAudioSubmixEffectChain=(Submix="/LyraUINavigation/Audio/Submixes/MainSubmix.MainSubmix",SubmixEffectChain=("/LyraUINavigation/Audio/DYN_LowMultibandDynamics.DYN_LowMultibandDynamics","/LyraUINavigation/Audio/Effects/SubmixEffects/DYN_LowDynamics.DYN_LowDynamics"))
   ```
-  **Common UI Framework**
+  - **Common UI Framework**
   ```
   [/Script/CommonUI.CommonUISettings]
   DefaultThrobberMaterial=/LyraUINavigation/UI/Foundation/Materials/M_UI_Throbber_Base.M_UI_Throbber_Base
   DefaultRichTextDataClass=/LyraUINavigation/UI/Foundation/RichTextData/CommonUIRichTextData.CommonUIRichTextData_C
   ```
 
-- Alter **DefaultInput.ini** with the following settings
-  **[/Script/CommonUI.CommonUIInputSettings]**
+  Alter **DefaultInput.ini** with the following settings:
+  - **[/Script/CommonUI.CommonUIInputSettings]**
   ```
   +InputActions=(ActionTag=UI.Action.Escape,DefaultDisplayName=NSLOCTEXT("[/Script/CommonUI]", "9CEDB5134A81C713ABBF439A9E695D4A", "Back"),KeyMappings=((Key=Escape),(Key=Gamepad_Special_Right)))
   ```
 
-  If you experience the issue described above, where the "Default UI Policy Class" resets to "None" after being set in the editor's project settings and restarting the project, resolve it by updating the **DefaultGame.ini** file as explained above.
-  Alternatively, you can fix the issue by editing **CommonGame/Source/Public/GameUIManagerSubsystem.h** and replacing:
+
+If you experience the issue described above, where the "Default UI Policy Class" resets to "None" after being set in the editor's project settings and restarting the project, resolve it by updating the **DefaultGame.ini** file as explained above.
+Alternatively, you can fix the issue by editing **CommonGame/Source/Public/GameUIManagerSubsystem.h** and replacing:
   ```
   UCLASS(Abstract, config = Game)
   ```
