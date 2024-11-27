@@ -2,6 +2,7 @@
 
 #include "UI/Subsystem/LyraUIMessaging.h"
 
+#include "UI/Subsystem/LyraUIMessagingSettings.h"
 #include "Messaging/CommonGameDialog.h"
 #include "NativeGameplayTags.h"
 #include "CommonLocalPlayer.h"
@@ -18,8 +19,11 @@ void ULyraUIMessaging::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	ConfirmationDialogClassPtr = ConfirmationDialogClass.LoadSynchronous();
-	ErrorDialogClassPtr = ErrorDialogClass.LoadSynchronous();
+	if (const ULyraUIMessagingSettings* LyraMessagingSettings = GetDefault<ULyraUIMessagingSettings>())
+	{
+		ConfirmationDialogClassPtr = LyraMessagingSettings->ConfirmationDialogClass.LoadSynchronous();			
+		ErrorDialogClassPtr = LyraMessagingSettings->ErrorDialogClass.LoadSynchronous();
+	}
 }
 
 void ULyraUIMessaging::ShowConfirmation(UCommonGameDialogDescriptor* DialogDescriptor, FCommonMessagingResultDelegate ResultCallback)
