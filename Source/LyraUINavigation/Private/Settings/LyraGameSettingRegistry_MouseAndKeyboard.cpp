@@ -144,6 +144,14 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeMouseAndKeyboardSett
 		const UEnhancedInputLocalPlayerSubsystem* EISubsystem = InLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 		const UEnhancedInputUserSettings* UserSettings = EISubsystem->GetUserSettings();
 
+#if !UE_BUILD_SHIPPING
+		ensureAlwaysMsgf(UserSettings, TEXT("No valid UserSettings, skip Enhanced Player Mappable Key profiles..."));
+#endif
+		if (!UserSettings)
+		{
+			return Screen;
+		}
+
 		// If you want to just get one profile pair, then you can do UserSettings->GetCurrentProfile
 
 		// A map of key bindings mapped to their display category
@@ -179,12 +187,6 @@ UGameSettingCollection* ULyraGameSettingRegistry::InitializeMouseAndKeyboardSett
 
 		static TSet<FName> CreatedMappingNames;
 		CreatedMappingNames.Reset();
-
-		if (!UserSettings)
-		{
-			UE_LOG(LogLyraGameSettingRegistry, Warning, TEXT("No valid UserSettings, skip Enhanced Player Mappable Key profiles..."));
-			return Screen;
-		}
 
 		for (const TPair<FGameplayTag, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair : UserSettings->GetAllSavedKeyProfiles())
 		{
